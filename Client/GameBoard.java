@@ -41,6 +41,8 @@ public class GameBoard extends JFrame {
 	*/
 	public void setGameBoardOnFrame(){
 		board.setLayout(new GridLayout(9,9,10,10));
+		
+		//create actual buttons later
 		for(int i = 0; i < 81; i++){
 			board.add(new JPanel());
 		}
