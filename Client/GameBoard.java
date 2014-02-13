@@ -13,19 +13,20 @@ public class GameBoard extends JFrame {
 	private JPanel gameboard;
     private JPanel infoboard;
     private JPanel console;
-    private HashMap<String,JPanel> squares;
+    private HashMap<String,JLabel> squares;
 	
 	public GameBoard(){
 		this.frame = new JFrame("Quoridor");
 		this.gameboard = new JPanel();
         this.infoboard = new JPanel();
         this.console = new JPanel();
-        this.squares = new HashMap<String, JPanel>();
+        this.squares = new HashMap<String, JLabel>();
 		setBackgroundAndFrame();
 		setGameBoardOnFrame();
         setInfoPanelOnFrame();
         setConsoleOnFrame();
 		pack();
+		setResizable(false);
 		setVisible(true);	
 	}
 
@@ -44,16 +45,19 @@ public class GameBoard extends JFrame {
 		gameboard.setLayout(new GridLayout(9,9,10,10));
 		
 		//create actual buttons later
-		
+		int count = 0;
 		for(int i = 97; i < 106; i++){
 			String s = Character.toString((char)i);
 			for(int j = 1; j < 10; j++){
 				s += j;
-				squares.put(s, new JPanel());
+				if(count % 2 == 0)
+					squares.put(s, new JLabel(new ImageIcon("../Images/image3.png")));
+				else
+					squares.put(s, new JLabel(new ImageIcon("../Images/image4.png")));
+				count++;
 				gameboard.add(squares.get(s));
 			}
 		}
-		System.out.println("Size of Map " + squares.size());
 		gameboard.setBorder(BorderFactory.createRaisedBevelBorder());
 		gameboard.setBackground(Color.BLACK);
 		gameboard.setBounds(20,20,550,550);
