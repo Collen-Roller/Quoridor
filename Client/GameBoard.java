@@ -14,13 +14,23 @@ public class GameBoard extends JFrame {
     private JPanel infoboard;
     private JPanel console;
     private HashMap<String,JLabel> squares;
+    private HashMap<String,JLabel> walls;
+    
+    private JLabel[] playerinfo;
+    
+    private int numberofplayers;
+    private int numberofaiplayers;
 	
-	public GameBoard(){
+	public GameBoard(int numbersofplayers, int numberofaiplayers){
+		this.numberofplayers = numbersofplayers;
+		this.numberofaiplayers = numberofaiplayers;
 		this.frame = new JFrame("Quoridor");
 		this.gameboard = new JPanel();
         this.infoboard = new JPanel();
         this.console = new JPanel();
         this.squares = new HashMap<String, JLabel>();
+        this.walls = new HashMap<String, JLabel>();
+        this.playerinfo = new JLabel[4];
 		setBackgroundAndFrame();
 		setGameBoardOnFrame();
         setInfoPanelOnFrame();
@@ -70,8 +80,16 @@ public class GameBoard extends JFrame {
         infoboard.setBackground(new Color(0,0,0,65));
         infoboard.setBounds(590,20,400,550);
         
-        //put play info into info panel
-        
+      	//put play info into info panel
+      	int offset = 30;
+      	for(int i=0; i<4; i++){
+      		playerinfo[i] = new JLabel();
+      		playerinfo[i].setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
+      		playerinfo[i].setBackground(Color.BLACK);
+      		playerinfo[i].setBounds(50,offset,300,100);
+      		offset += 130;
+      		infoboard.add(playerinfo[i]);
+      	}
         getContentPane().add(infoboard);
     }
 
@@ -85,9 +103,7 @@ public class GameBoard extends JFrame {
    	
 	
 	public static void main(String [] args){
-		new GameBoard();
-		
-		
+		new GameBoard(2,2);
 	}
 }
 
