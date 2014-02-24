@@ -68,7 +68,7 @@ public class GameBoard extends JFrame {
 				if(count % 2 == 0)
 					squares.put(s, new JLabel(new ImageIcon("../../Images/image3.png")));
 				else
-					squares.put(s, new JLabel(new ImageIcon("../../Images/image4.png")));
+					squares.put(s, new JLabel(new ImageIcon("../../Images/image7.png")));
 				count++;
 				gameboard.add(squares.get(s));
 			}
