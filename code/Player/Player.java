@@ -2,6 +2,7 @@
   Team: 4 Men and a Cripple
   Date: 2/16/2014
 */
+package code.Player;
 
 public class Player {
 
@@ -67,4 +68,5 @@ public class Player {
 	public String getName(){
 		return name;
 	}		
+	
 }
