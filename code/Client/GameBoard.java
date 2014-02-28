@@ -133,7 +133,7 @@ public class GameBoard extends JFrame {
    	public void updateSinglePlayerInfo(Player p, int index){
    		JLabel name = new JLabel(p.getName(),JLabel.CENTER);
    		infoboard.add(name);
-   		name.setFont(new Font("Serif", Font.BOLD, 22));
+   		name.setFont(new Font("Verdana", Font.BOLD, 22));
    		name.setForeground(Color.BLACK);
    		name.setOpaque(true);
    		name.setBackground(new Color(0,0,0,0));
@@ -141,7 +141,7 @@ public class GameBoard extends JFrame {
    		
     	JLabel loc = new JLabel("Current Location: " + p.getLocation(),JLabel.CENTER);
     	infoboard.add(loc);
-    	loc.setFont(new Font("Serif", Font.BOLD, 14));
+    	loc.setFont(new Font("Verdana", Font.BOLD, 14));
     	loc.setForeground(Color.BLACK);
     	loc.setOpaque(true);
    		loc.setBackground(new Color(0,0,0,0));
@@ -153,7 +153,7 @@ public class GameBoard extends JFrame {
     		
     	JLabel wall = new JLabel("Remaining Walls: " + walls,JLabel.CENTER);
     	infoboard.add(wall);
-    	wall.setFont(new Font("Serif", Font.BOLD, 14));
+    	wall.setFont(new Font("Verdana", Font.BOLD, 14));
     	wall.setForeground(Color.BLACK);
     	wall.setOpaque(true);
    		wall.setBackground(new Color(0,0,0,0));
@@ -161,7 +161,7 @@ public class GameBoard extends JFrame {
     					
     	JLabel moves = new JLabel("Move Count: " + p.getMoveCount(), JLabel.CENTER);
     	infoboard.add(moves);
-    	moves.setFont(new Font("Serif", Font.BOLD, 14));
+    	moves.setFont(new Font("Verdana", Font.BOLD, 14));
     	moves.setForeground(Color.BLACK);
     	moves.setOpaque(true);
    		moves.setBackground(new Color(0,0,0,0));
