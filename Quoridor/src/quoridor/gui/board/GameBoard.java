@@ -51,8 +51,8 @@ public class GameBoard extends JPanel implements GUIPanel {
 	public GameBoard() {
 		UIManager.put("Tree.rendererFillBackground", false);
 		background = Toolkit.getDefaultToolkit().createImage("res/image1.png");
-		tileA = Toolkit.getDefaultToolkit().createImage("res/TileA.png");
-		tileB = Toolkit.getDefaultToolkit().createImage("res/TileB.png");
+		tileA = Toolkit.getDefaultToolkit().createImage("res/lightwood.png");
+		tileB = Toolkit.getDefaultToolkit().createImage("res/darkwood.png");
 		pawn = Toolkit.getDefaultToolkit().createImage("res/Pawn.png");
 		wallv = Toolkit.getDefaultToolkit().createImage("res/WallV.png");
 		wallh = Toolkit.getDefaultToolkit().createImage("res/WallH.png");
