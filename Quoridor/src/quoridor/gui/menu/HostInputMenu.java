@@ -33,8 +33,8 @@ public class HostInputMenu extends JPanel implements GUIPanel {
 	public HostInputMenu(int players) {
 		background = Toolkit.getDefaultToolkit()
 				.createImage("res/MenuBack.png");
-		startImg = Toolkit.getDefaultToolkit().createImage("res/StartBtn.png");
-		startSel = Toolkit.getDefaultToolkit().createImage("res/StartSel.png");
+		startImg = Toolkit.getDefaultToolkit().createImage("res/Start_button.png");
+		startSel = Toolkit.getDefaultToolkit().createImage("res/Start_button_select.png");
 		fields = new JTextField[players];
 		for (int i = 0; i < fields.length; i++) {
 			fields[i] = new JTextField(

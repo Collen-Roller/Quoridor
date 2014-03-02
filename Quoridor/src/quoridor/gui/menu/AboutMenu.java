@@ -30,8 +30,8 @@ public class AboutMenu extends JPanel implements GUIPanel {
 	public AboutMenu() {
 		background = Toolkit.getDefaultToolkit()
 				.createImage("res/MenuBack.png");
-		backImg = Toolkit.getDefaultToolkit().createImage("res/BackBtn.png");
-		backSel = Toolkit.getDefaultToolkit().createImage("res/BackSel.png");
+		backImg = Toolkit.getDefaultToolkit().createImage("res/Back_button.png");
+		backSel = Toolkit.getDefaultToolkit().createImage("res/Back_button_select.png");
 		backBtn = new JButton(new ImageIcon(backImg));
 		backBtn.setBorderPainted(false);
 		backBtn.setContentAreaFilled(false);

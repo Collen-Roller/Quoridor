@@ -35,11 +35,11 @@ public class StartupGUI extends JPanel implements GUIPanel {
 		background = Toolkit.getDefaultToolkit().createImage(
 				"res/TitleScreen.png");
 		quoridorImg = Toolkit.getDefaultToolkit().createImage(
-				"res/QuoridorBtn.png");
+				"res/Quoridor_button.png");
 		quoridorSel = Toolkit.getDefaultToolkit().createImage(
-				"res/QuoridorSel.png");
-		aboutImg = Toolkit.getDefaultToolkit().createImage("res/AboutBtn.png");
-		aboutSel = Toolkit.getDefaultToolkit().createImage("res/AboutSel.png");
+				"res/Quoridor_button_select.png");
+		aboutImg = Toolkit.getDefaultToolkit().createImage("res/About_button.png");
+		aboutSel = Toolkit.getDefaultToolkit().createImage("res/About_button_select.png");
 		setLayout(null);
 		quoridorBtn = new JButton(new ImageIcon(quoridorImg));
 		quoridorBtn.setBorderPainted(false);
