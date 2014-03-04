@@ -2,20 +2,27 @@ package quoridor.backend.managers;
 
 import java.util.ArrayList;
 
+import quoridor.backend.containers.Player;
 import quoridor.backend.containers.Position;
 import quoridor.backend.pieces.Pawn;
 import quoridor.backend.pieces.Walls;
 
 public class GameState {
 
+	private ArrayList<Player> players;
     private ArrayList<Pawn> pawns;
     private Walls walls;
 
     public GameState() {
+    	players = new ArrayList<Player>();
         pawns = new ArrayList<Pawn>();
         walls = new Walls();
     }
 
+    public ArrayList<Player> getPlayer() {
+    	return players;
+    }
+    
     public ArrayList<Pawn> getPawns() {
         return pawns;
     }
@@ -53,6 +60,11 @@ public class GameState {
         pawns.add(p);
         return true;
     }
+    
+    public boolean addPlayer(Player p){
+    	players.add(p);
+    	return true;
+    }
 
     public boolean movePawn(Pawn p, String move) {
         Position pos = new Position(move);
@@ -64,3 +76,4 @@ public class GameState {
     }
 
 }
+
