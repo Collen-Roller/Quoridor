@@ -54,6 +54,10 @@ public class Pawn {
         }
         return true;
     }
+    
+    public NetworkClient getClient(){
+    	return networkClient;
+    }
 
     public String getMove() {
         networkClient.sendString("MOVE?");
@@ -88,3 +92,4 @@ public class Pawn {
     }
 
 }
+

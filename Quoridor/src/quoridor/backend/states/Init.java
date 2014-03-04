@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import quoridor.backend.containers.Player;
 import quoridor.backend.pieces.Pawn;
 import quoridor.gui.board.GameBoard;
 import quoridor.main.Quoridor;
@@ -25,8 +26,12 @@ public class Init implements State {
         Queue<String> rejected = new LinkedList<String>();
         for(int i = 0; i < Quoridor.getHosts().length; i++) {
             Pawn p = new Pawn(startingPos[i]);
-            if(p.startNetwork(Quoridor.getHosts()[i]))
+            if(p.startNetwork(Quoridor.getHosts()[i])){
                 Quoridor.getGameState().addPawn(p);
+                p.getClient().sendString("Enter Player Name");
+                Player player = new Player(p.getClient().getString(),p.getPosition().toString(),Quoridor.getHosts().length);
+                Quoridor.getGameState().addPlayer(player);
+            }
             else
                 rejected.add(Quoridor.getHosts()[i]);
         }
