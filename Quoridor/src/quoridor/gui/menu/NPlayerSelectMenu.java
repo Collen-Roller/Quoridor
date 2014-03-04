@@ -35,13 +35,13 @@ public class NPlayerSelectMenu extends JPanel implements GUIPanel {
 		background = Toolkit.getDefaultToolkit()
 				.createImage("res/MenuBack.png");
 		twoPlayerImg = Toolkit.getDefaultToolkit().createImage(
-				"res/2PlayerBtn.png");
+				"res/2_player_button.png");
 		fourPlayerImg = Toolkit.getDefaultToolkit().createImage(
-				"res/4PlayerBtn.png");
+				"res/4_player_button.png");
 		twoPlayerSel = Toolkit.getDefaultToolkit().createImage(
-				"res/2PlayerSel.png");
+				"res/2_player_select.png");
 		fourPlayerSel = Toolkit.getDefaultToolkit().createImage(
-				"res/4PlayerSel.png");
+				"res/4_player_select.png");
 		twoPlayerBtn = new JButton(new ImageIcon(twoPlayerImg));
 		twoPlayerBtn.setBorderPainted(false);
 		twoPlayerBtn.setContentAreaFilled(false);
