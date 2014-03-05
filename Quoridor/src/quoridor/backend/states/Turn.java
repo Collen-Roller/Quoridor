@@ -41,9 +41,10 @@ public class Turn implements State {
                     p.boot();
                     itr.remove();
                     itr2.remove();
+                }else{
+                	p2.updateLocation(move);
+                	p2.updateMove();
                 }
-                p2.updateLocation(move);
-                p2.updateMove();
             } else if(move.length() == 3){
                 if(!Quoridor.getGameState().addWall(move)) {
                 	Quoridor.getGUI().getPanel().writeToConsole(p2.getName() + " is being removed");
@@ -51,8 +52,8 @@ public class Turn implements State {
                     p.boot();
                     itr.remove();
                     itr2.remove();
-                }
-                p2.updateWalls();
+                }else
+                	p2.updateWalls();
             }
             
             Quoridor.getGUI().getPanel().update();

@@ -114,6 +114,7 @@ public class GameBoard extends JPanel implements GUIPanel {
 	
 	public void updatePlayerInfo(ArrayList<Player> p){
 		playerInfo = new ArrayList<JLabel>();
+		updateNumberOfPlayers(p.size());
 		int index = 0;
 		for(int i = 0; i<numberOfPlayers; i++){
 			playerInfo.add(new JLabel(p.get(i).getName(),JLabel.CENTER));
@@ -203,6 +204,10 @@ public class GameBoard extends JPanel implements GUIPanel {
 		consolePane.add(scrollPane);
 		add(consolePane);
 	}
+	
+	public void updateNumberOfPlayers(int n){
+		numberOfPlayers = n;
+	}
 
 	public void paintComponent(Graphics g) {
 		if (newBuffer == null || offscreen == null) {
@@ -215,9 +220,8 @@ public class GameBoard extends JPanel implements GUIPanel {
 	@Override
 	public void update() {
 		board.repaint();
-		
 		//Figure Out Way to repaint this!
-		infoBoard.repaint();
+		//infoBoard.repaint();
 		updatePlayerInfo(Quoridor.getGameState().getPlayer());
 		
 	}
