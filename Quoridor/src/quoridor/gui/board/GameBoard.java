@@ -3,17 +3,20 @@ package quoridor.gui.board;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.JTree;
 import javax.swing.UIManager;
 
+import quoridor.backend.containers.Player;
 import quoridor.backend.containers.Position;
 import quoridor.backend.pieces.Pawn;
 import quoridor.gui.interfaces.GUIPanel;
@@ -27,10 +30,10 @@ public class GameBoard extends JPanel implements GUIPanel {
 	private JPanel infoBoard;
 
 	private JPanel consolePane;
+	
+	private ArrayList <JLabel> playerInfo;
 
 	private JTextArea console;
-
-	private JTree infoTree;
 
 	private final Image background;
 
@@ -47,8 +50,11 @@ public class GameBoard extends JPanel implements GUIPanel {
 	private Image newBuffer;
 
 	private Graphics offscreen;
+	
+	private int numberOfPlayers;
 
-	public GameBoard() {
+	public GameBoard(int numberOfPlayers) {
+		this.numberOfPlayers = numberOfPlayers;
 		UIManager.put("Tree.rendererFillBackground", false);
 		background = Toolkit.getDefaultToolkit().createImage("res/image1.png");
 		tileA = Toolkit.getDefaultToolkit().createImage("res/lightwood.png");
@@ -105,42 +111,94 @@ public class GameBoard extends JPanel implements GUIPanel {
 		board.setBackground(Color.BLACK);
 		add(board);
 	}
+	
+	public void updatePlayerInfo(ArrayList<Player> p){
+		playerInfo = new ArrayList<JLabel>();
+		int index = 0;
+		for(int i = 0; i<numberOfPlayers; i++){
+			playerInfo.add(new JLabel(p.get(i).getName(),JLabel.CENTER));
+			infoBoard.add(playerInfo.get(index));
+			playerInfo.get(index).setFont(new Font("Verdana", Font.BOLD, 14));
+			playerInfo.get(index).setForeground(Color.BLACK);
+			playerInfo.get(index).setOpaque(true);
+			playerInfo.get(index).setBackground(new Color(0,0,0,0));
+			playerInfo.get(index).setBounds(25,(105*i),200,75);
+			index++;
+	   		
+			playerInfo.add(new JLabel("Current Location: " + p.get(i).getLocation(),JLabel.CENTER));
+			infoBoard.add(playerInfo.get(index));
+			playerInfo.get(index).setFont(new Font("Verdana", Font.BOLD, 12));
+			playerInfo.get(index).setForeground(Color.BLACK);
+			playerInfo.get(index).setOpaque(true);
+			playerInfo.get(index).setBackground(new Color(0,0,0,0));
+			playerInfo.get(index).setBounds(25,(105*i)+15,200,75);
+			index++;
+	    					
+			String walls = "";
+			for(int j=0; j<p.get(i).getRemainingWalls(); j++)
+				walls += "|";
+	    		
+			playerInfo.add(new JLabel("Remaining Walls: " + walls,JLabel.CENTER));
+			infoBoard.add(playerInfo.get(index));
+			playerInfo.get(index).setFont(new Font("Verdana", Font.BOLD, 12));
+			playerInfo.get(index).setForeground(Color.BLACK);
+			playerInfo.get(index).setOpaque(true);
+			playerInfo.get(index).setBackground(new Color(0,0,0,0));
+			playerInfo.get(index).setBounds(25,(105*i)+30,200,75);
+			index++;
+	    					
+			playerInfo.add(new JLabel("Move Count: " + p.get(i).getMoveCount(), JLabel.CENTER));
+			infoBoard.add(playerInfo.get(index));
+			playerInfo.get(index).setFont(new Font("Verdana", Font.BOLD, 12));
+			playerInfo.get(index).setForeground(Color.BLACK);
+			playerInfo.get(index).setOpaque(true);
+			playerInfo.get(index).setBackground(new Color(0,0,0,0));
+			playerInfo.get(index).setBounds(25,(105*i)+45,200,75);
+			index++;
+			
+		}
+	    	
+	    	
+	}
 
 	public void setInfoPanel() {
 		infoBoard = new JPanel();
-		infoBoard.setSize(new Dimension(238, 450));
-		infoBoard.setLocation(470, 10);
-		infoBoard.setOpaque(false);
 		infoBoard.setLayout(null);
-		infoTree = new JTree();
-		infoTree.setSize(new Dimension(238, 450));
-		infoTree.setLocation(0, 0);
-		infoTree.setForeground(Color.WHITE);
-		JScrollPane scrollPane = new JScrollPane(infoTree);
-		scrollPane.setLocation(0, 0);
-		scrollPane.setOpaque(false);
-		scrollPane.setSize(new Dimension(238, 450));
-		scrollPane.setBorder(BorderFactory.createRaisedBevelBorder());
-		updateTree();
-		infoBoard.add(scrollPane);
+		infoBoard.setBorder(BorderFactory.createRaisedBevelBorder());
+        infoBoard.setBackground(new Color(0,0,0,65));
+        infoBoard.setBounds(475,10,245,450);
+        
+      	//Adds Player JPanel's to infoPanel
+      	//offset to determine Y axis placement 
+      	int offset = 20;
+      	JLabel [] playerInfoBoxes = new JLabel[numberOfPlayers];
+      	for(int i=0; i<numberOfPlayers; i++){
+      		playerInfoBoxes[i] = new JLabel();
+      		playerInfoBoxes[i].setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
+      		playerInfoBoxes[i].setBackground(Color.BLACK);
+      		playerInfoBoxes[i].setBounds(23,offset,200,90);
+      		offset += 105;
+      		infoBoard.add(playerInfoBoxes[i]);
+      	}
+      	updatePlayerInfo(Quoridor.getGameState().getPlayer());
 		add(infoBoard);
 	}
 
 	public void setConsole() {
 		consolePane = new JPanel();
-		consolePane.setSize(new Dimension(698, 218));
+		consolePane.setSize(new Dimension(705, 218));
 		consolePane.setLocation(10, 470);
 		consolePane.setOpaque(false);
 		consolePane.setLayout(null);
 		console = new JTextArea();
 		console.setLocation(0, 0);
-		console.setSize(new Dimension(698, 218));
+		console.setSize(new Dimension(705, 218));
 		console.setForeground(Color.BLACK);
 		console.setEditable(false);
 		JScrollPane scrollPane = new JScrollPane(console);
 		scrollPane.setLocation(0, 0);
 		scrollPane.setOpaque(false);
-		scrollPane.setSize(new Dimension(698, 218));
+		scrollPane.setSize(new Dimension(705, 218));
 		scrollPane.setBorder(BorderFactory.createRaisedBevelBorder());
 		consolePane.add(scrollPane);
 		add(consolePane);
@@ -157,10 +215,10 @@ public class GameBoard extends JPanel implements GUIPanel {
 	@Override
 	public void update() {
 		board.repaint();
-		updateTree();
-	}
-
-	private void updateTree() {
+		
+		//Figure Out Way to repaint this!
+		infoBoard.repaint();
+		updatePlayerInfo(Quoridor.getGameState().getPlayer());
 		
 	}
 

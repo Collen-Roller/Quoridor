@@ -25,6 +25,7 @@ public class Player {
 	public void updateWalls(){
 		wallsplaced++;
 		remainingwalls--;
+		updateMove();
 	}
 	
 	//Mutator method to increment movecount

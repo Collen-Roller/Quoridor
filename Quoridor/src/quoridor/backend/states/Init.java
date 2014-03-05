@@ -35,7 +35,7 @@ public class Init implements State {
             else
                 rejected.add(Quoridor.getHosts()[i]);
         }
-        Quoridor.getGUI().setPanel(new GameBoard());
+        Quoridor.getGUI().setPanel(new GameBoard(Quoridor.getHosts().length));
         while(!rejected.isEmpty())
             Quoridor.getGUI().getPanel().writeToConsole("Connection to " +
                                                          rejected.remove() +
