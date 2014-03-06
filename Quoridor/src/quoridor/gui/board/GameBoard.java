@@ -171,7 +171,9 @@ public class GameBoard extends JPanel implements GUIPanel {
         
       	//Adds Player JPanel's to infoPanel
       	//offset to determine Y axis placement 
+        
       	int offset = 20;
+      	updatePlayerInfo(Quoridor.getGameState().getPlayer());
       	JLabel [] playerInfoBoxes = new JLabel[numberOfPlayers];
       	for(int i=0; i<numberOfPlayers; i++){
       		playerInfoBoxes[i] = new JLabel();
@@ -181,7 +183,6 @@ public class GameBoard extends JPanel implements GUIPanel {
       		offset += 105;
       		infoBoard.add(playerInfoBoxes[i]);
       	}
-      	updatePlayerInfo(Quoridor.getGameState().getPlayer());
 		add(infoBoard);
 	}
 
@@ -217,13 +218,19 @@ public class GameBoard extends JPanel implements GUIPanel {
 		g.drawImage(background, 0, 0, this);
 	}
 
+	public void updateInfo(){
+		remove(infoBoard);
+		infoBoard = null;
+		playerInfo = null;
+		setInfoPanel();
+		revalidate();
+		repaint();
+	}
+	
 	@Override
 	public void update() {
-		board.repaint();
-		//Figure Out Way to repaint this!
-		//infoBoard.repaint();
-		updatePlayerInfo(Quoridor.getGameState().getPlayer());
-		
+		updateInfo();
+		board.repaint();		
 	}
 
 	@Override
