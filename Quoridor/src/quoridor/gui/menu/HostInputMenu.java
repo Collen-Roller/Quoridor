@@ -66,8 +66,9 @@ public class HostInputMenu extends JPanel implements GUIPanel {
 				for (int i = 0; i < fields.length; i++)
 					if (!fields[i].getText().equals(""))
 						newHosts[i] = fields[validCount++].getText();
+				
 				Quoridor.setHosts(newHosts);
-				Quoridor.newStateMachine();
+				Quoridor.getGUI().setPanel(new Loading());
 			}
 		});
 		startBtn.setRolloverIcon(new ImageIcon(startSel));
