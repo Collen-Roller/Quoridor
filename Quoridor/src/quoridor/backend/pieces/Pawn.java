@@ -1,5 +1,6 @@
 package quoridor.backend.pieces;
 
+import java.awt.Image;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.Iterator;
@@ -17,11 +18,17 @@ public class Pawn {
     private Position pos;
     private NetworkClient networkClient;
     private final String moveRegex = "[a-i][1-9][h,v]|[a-h][1-8]";
+    private Image pawn;
 
     // TODO: Name the pawns
 
-    public Pawn(String pos) {
+    public Pawn(String pos, Image p) {
         this.pos = new Position(pos);
+        this.pawn = p;
+    }
+    
+    public Image getPawn(){
+    	return pawn;
     }
     
     public Set<Position> calcMoves() {

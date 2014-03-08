@@ -40,9 +40,7 @@ public class GameBoard extends JPanel implements GUIPanel {
 	private final Image tileA;
 
 	private final Image tileB;
-
-	private final Image pawn;
-
+	
 	private final Image wallv;
 
 	private final Image wallh;
@@ -59,7 +57,6 @@ public class GameBoard extends JPanel implements GUIPanel {
 		background = Toolkit.getDefaultToolkit().createImage("res/image1.png");
 		tileA = Toolkit.getDefaultToolkit().createImage("res/lightwood.png");
 		tileB = Toolkit.getDefaultToolkit().createImage("res/darkwood.png");
-		pawn = Toolkit.getDefaultToolkit().createImage("res/Pawn.png");
 		wallv = Toolkit.getDefaultToolkit().createImage("res/WallV.png");
 		wallh = Toolkit.getDefaultToolkit().createImage("res/WallH.png");
 		setLayout(null);
@@ -88,7 +85,7 @@ public class GameBoard extends JPanel implements GUIPanel {
 									* 44 + 6 * j + 1, 44, 44, this);
 					}
 				for (Pawn p : Quoridor.getGameState().getPawns())
-					offscreen.drawImage(pawn,
+						offscreen.drawImage(p.getPawn(),
 							p.getPosition().x * 44 + 6 * p.getPosition().x + 1,
 							p.getPosition().y * 44 + 6 * p.getPosition().y + 1,
 							44, 44, this);

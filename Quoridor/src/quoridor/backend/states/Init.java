@@ -1,5 +1,7 @@
 package quoridor.backend.states;
 
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -13,10 +15,15 @@ public class Init implements State {
 
     private HashMap<Boolean, State> transitions;
     private final String[] startingPos = {"E1", "E9", "A5", "I5"};
+    private Image [] pawns = new Image[4];
 
     public Init() {
         transitions = new HashMap<Boolean, State>();
         transitions.put(true, new Turn());
+        pawns[0] = Toolkit.getDefaultToolkit().createImage("res/pawn_dark.png");
+		pawns[1] = Toolkit.getDefaultToolkit().createImage("res/pawn_light.png");
+		pawns[2] = Toolkit.getDefaultToolkit().createImage("res/pawn_blue.png");
+		pawns[3] = Toolkit.getDefaultToolkit().createImage("res/pawn_red.png");
     }
 
     @Override
@@ -25,7 +32,7 @@ public class Init implements State {
         // TODO: Some indication that it is trying to connect to hosts
         Queue<String> rejected = new LinkedList<String>();
         for(int i = 0; i < Quoridor.getHosts().length; i++) {
-            Pawn p = new Pawn(startingPos[i]);
+            Pawn p = new Pawn(startingPos[i],pawns[i]);
             if(p.startNetwork(Quoridor.getHosts()[i])){
                 Quoridor.getGameState().addPawn(p);
                 p.getClient().sendString("Enter Player Name");
