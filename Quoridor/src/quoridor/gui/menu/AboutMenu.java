@@ -1,6 +1,7 @@
 package quoridor.gui.menu;
 
 import java.awt.Dimension;
+
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -10,6 +11,8 @@ import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
 
 import quoridor.gui.interfaces.GUIPanel;
 import quoridor.main.Quoridor;
@@ -26,6 +29,10 @@ public class AboutMenu extends JPanel implements GUIPanel {
 	private ActionListener a1;
 
 	private JButton backBtn;
+	
+	private JLabel info;
+	
+	private JScrollPane scroll;
 
 	public AboutMenu() {
 		background = Toolkit.getDefaultToolkit()
@@ -48,9 +55,25 @@ public class AboutMenu extends JPanel implements GUIPanel {
 			}
 		});
 		backBtn.setRolloverIcon(new ImageIcon(backSel));
-
+		info = new JLabel(getText(), JLabel.CENTER);
+		info.setSize(500, 500);
+		info.setVisible(true);
 		setLayout(null);
+		scroll = new JScrollPane(info);
+		scroll.setSize(300, 300);
+		scroll.setVisible(true);
+		scroll.setLocation((Quoridor.WIDTH - scroll.getWidth())/2, 175);
+		scroll.setOpaque(false);
+		add(scroll);
 		add(backBtn);
+	}
+	
+	
+	private String getText(){
+		return "<html>Welcome to Quoridor!<br><br><br>This program was " +
+				"written by:<br><br>-Benjamin Sladewski<br>-Collen " +
+				"Roller<br>-John Payton Jr.<br>-Ian Madigan<br>-Neil Kasson</html>";
+
 	}
 
 	@Override
