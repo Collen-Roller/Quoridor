@@ -19,12 +19,7 @@ public class Pawn {
     private NetworkClient networkClient;
     private final String moveRegex = "[a-i][1-9][h,v]|[a-h][1-8]";
     private Image pawn;
-<<<<<<< HEAD
-=======
-    
-    
-    //sprivate Map<Position, Position> locations;
->>>>>>> f28b4896560d79f2353326088bfcefa4ebbedac1
+
 
     // TODO: Name the pawns
     //Why Do Pawns have to be named? each player object exists
@@ -32,10 +27,6 @@ public class Pawn {
     //checkout init state how thats set up. 
 
     public Pawn(String pos, Image p) {
-<<<<<<< HEAD
-=======
-        //this.locations = new TreeMap<Position, Position>;
->>>>>>> f28b4896560d79f2353326088bfcefa4ebbedac1
         this.pos = new Position(pos);
         this.pawn = p;
     }
@@ -112,4 +103,5 @@ public class Pawn {
     }
 
 }
+
 
