@@ -19,10 +19,12 @@ public class Pawn {
     private NetworkClient networkClient;
     private final String moveRegex = "[a-i][1-9][h,v]|[a-h][1-8]";
     private Image pawn;
+    private Map<Position, Position> locations;
 
     // TODO: Name the pawns
 
     public Pawn(String pos, Image p) {
+        this.locations = new TreeMap<Position, Position>;
         this.pos = new Position(pos);
         this.pawn = p;
     }
