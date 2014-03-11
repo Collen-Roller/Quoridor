@@ -74,7 +74,7 @@ public class AboutMenu extends JPanel implements GUIPanel {
 				"written by<br><i>4 Men and a Cripple:</i><br><br>-Benjamin Sladewski" +
 				"<br>-Collen Roller<br>-John Payton Jr.<br>-Ian Madigan" +
 				"<br>-Neil Kasson<br><br>Here's some space<br>where we can" +
-				"<br>put more<br>words<br>in<br></html>";
+				"<br>put more<br>words<br>in<br>!</html>";
 
 	}
 
