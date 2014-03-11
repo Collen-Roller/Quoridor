@@ -56,23 +56,25 @@ public class AboutMenu extends JPanel implements GUIPanel {
 		});
 		backBtn.setRolloverIcon(new ImageIcon(backSel));
 		info = new JLabel(getText(), JLabel.CENTER);
-		info.setSize(500, 500);
 		info.setVisible(true);
 		setLayout(null);
 		scroll = new JScrollPane(info);
-		scroll.setSize(300, 300);
+		scroll.setSize(250, 170);
 		scroll.setVisible(true);
-		scroll.setLocation((Quoridor.WIDTH - scroll.getWidth())/2, 175);
-		scroll.setOpaque(false);
+		System.out.println(scroll.toString());
+		scroll.setLocation((Quoridor.WIDTH - scroll.getWidth())/2, 225);
+
 		add(scroll);
 		add(backBtn);
 	}
 	
 	
 	private String getText(){
-		return "<html>Welcome to Quoridor!<br><br><br>This program was " +
-				"written by:<br><br>-Benjamin Sladewski<br>-Collen " +
-				"Roller<br>-John Payton Jr.<br>-Ian Madigan<br>-Neil Kasson</html>";
+		return "<html><u>Welcome to Quoridor!</u><br><br><br>This program was " +
+				"written by<br><i>4 Men and a Cripple:</i><br><br>-Benjamin Sladewski" +
+				"<br>-Collen Roller<br>-John Payton Jr.<br>-Ian Madigan" +
+				"<br>-Neil Kasson<br><br>Here's some space<br>where we can" +
+				"<br>put more<br>words<br>in<br></html>";
 
 	}
 
@@ -99,3 +101,4 @@ public class AboutMenu extends JPanel implements GUIPanel {
 	}
 
 }
+
