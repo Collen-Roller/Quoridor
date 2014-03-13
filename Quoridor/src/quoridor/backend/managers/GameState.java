@@ -68,7 +68,18 @@ public class GameState {
 
     public boolean movePawn(Pawn p, String move) {
         Position pos = new Position(move);
-        if(p.calcMoves().contains(pos) && !walls.isBlocked(p.getPosition(), pos)) {
+        boolean neighborJump = false;
+        boolean neighborAttack = false;
+        for(int i=0; i<pawns.size(); i++){
+        	if(p.calcMoves().contains(pawns.get(i).getPosition())){
+        		if(pawns.get(i).getPosition().equals(pos))
+        			neighborAttack = true;
+        		if(pawns.get(i).calcMoves().contains(pos))
+        			neighborJump = true;
+        	}
+        }
+        if(((p.calcMoves().contains(pos) && !neighborAttack)|| neighborJump) 
+        		&& !walls.isBlocked(p.getPosition(), pos)) {
             p.setPosition(pos);
             return true;
         }
@@ -76,4 +87,5 @@ public class GameState {
     }
 
 }
+
 
