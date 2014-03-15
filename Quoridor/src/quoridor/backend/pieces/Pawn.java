@@ -35,6 +35,7 @@ public class Pawn {
     	return pawn;
     }
     
+    // Calculates the possible moves and stores them in a set
     public Set<Position> calcMoves() {
         Set<Position> moves = new TreeSet<Position>();
         moves.add(new Position(pos.x + 1, pos.y));
@@ -49,7 +50,8 @@ public class Pawn {
         }
         return moves;
     }
-
+    
+    // Creates a network connection
     public boolean startNetwork(String host) {
         try {
             networkClient = new NetworkClient(host);
@@ -66,10 +68,12 @@ public class Pawn {
         return true;
     }
     
+    // returns the network client
     public NetworkClient getClient(){
     	return networkClient;
     }
 
+    
     public String getMove() {
         networkClient.sendString("MOVE?");
         String s = networkClient.getString();
@@ -80,24 +84,29 @@ public class Pawn {
         return "ERROR";
     }
 
+    // sets pos to the new position object, with the passed in input 
     public void move(String s) {
         pos = new Position(s);
     }
 
+    // closes the network connection  for a certain pawn 
     public void boot() {
         for(Pawn p : Quoridor.getGameState().getPawns())
             p.networkClient.sendString("BOOTED PLAYER");
         networkClient.close();
     }
 
+    // Returns the postion object
     public Position getPosition() {
         return pos;
     }
 
+    // Prints where the pawn is located
     public String toString() {
         return "Pawn at: " + pos;
     }
 
+    // sets pos to the passed in position object
     public void setPosition(Position pos) {
         this.pos = pos;
     }

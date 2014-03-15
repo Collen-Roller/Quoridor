@@ -4,12 +4,16 @@ public class Position implements Comparable<Position> {
 
     public int x, y;
 
+    // Creates a position object, being passed a string
+    // Sets x and y to the chars in the substring, and type casts them
     public Position(String pos) {
         pos = pos.toLowerCase();
         x = (int) pos.charAt(0) - 97;
         y = (int) pos.charAt(1) - 49;
     }
 
+    // Creates a position object that
+    // Sets x and y to the values passed in
     public Position(int x, int y) {
         this.x = x;
         this.y = y;
