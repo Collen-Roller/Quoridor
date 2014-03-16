@@ -7,36 +7,67 @@ import quoridor.backend.containers.Position;
 import quoridor.backend.pieces.Pawn;
 import quoridor.backend.pieces.Walls;
 
+/**
+ * @author Team 4 Men And A Cripple
+ * 
+ * This class represents the current game state of a game of Quoridor.
+ */
 public class GameState {
 
+	/**
+	 * A list of all players currently in the game of Quoridor.
+	 */
 	private ArrayList<Player> players;
+	
+    /**
+     * A list of all pawns belonging to players in the game of Quoridor.
+     */
     private ArrayList<Pawn> pawns;
+    
+    /**
+     * A reference to the walls in the game of Quoridor.
+     */
     private Walls walls;
 
-    // Creates the GameState object
+    /**
+     * Constructs a new, clean game state.
+     */
     public GameState() {
     	players = new ArrayList<Player>();
         pawns = new ArrayList<Pawn>();
         walls = new Walls();
     }
 
-    // Returns the arraylist of player objects
+    /**
+     * @return The list of all players currently in the game of Quoridor.
+     */
     public ArrayList<Player> getPlayer() {
     	return players;
     }
-    
-    // Returns the arraylist of pawn objects
+
+    /**
+     * @return The list of all pawns currently in the game of Quoridor.
+     */
     public ArrayList<Pawn> getPawns() {
         return pawns;
     }
 
-    // Returns the walls object
+    /**
+     * @return The reference to the walls in the game of Quoridor.
+     */
     public Walls getWalls() {
         return walls;
     }
 
-    // Checks to see if the current placement of the wall
-    // is a valid placement, if so returns true
+    /**
+     * Attempts to add a new wall to the game state given 2 positions.
+     * 
+     * @param a The position identifying the upper-left most position the wall
+     *          is blocking.
+     * @param b The position used to determine if the wall is horizontal or
+     *          vertical.
+     * @return Whether the wall was able to be successfully placed.
+     */
     public boolean addWall(Position a, Position b) {
         if (walls.canAdd(a, b)) {
             walls.add(a, b);
@@ -45,11 +76,14 @@ public class GameState {
         return false;
     }
 
-    // Passed a move s and uppercases the move then stores the first part
-    // part of the move string in a
-    // Then checks to see if the third character of the string
-    // is either an H or a V and stores that in position b
-    // Then calls the addWall Method 
+    /**
+     * Attempts to add a new wall to the game state given the string encoding
+     * of a wall. Converts the string encoding to two positions and calls the
+     * other addWall method.
+     * 
+     * @param s The string encoding of the wall placement.
+     * @return Whether the wall could be successfully placed.
+     */
     public boolean addWall(String s) {
         s = s.toUpperCase();
         Position a = new Position(s.substring(0, 2));
@@ -61,29 +95,49 @@ public class GameState {
         return addWall(a, b);
     }
 
-    // Checks to see if the game has ended
+    /**
+     * @return Whether a player has won the game.
+     * 
+     * TODO: Add the full win condition to the game.
+     */
     public boolean hasWon() {
         if(pawns.size() < 2)
             return true;
         return false;
     }
 
-    // Adds a pawn object
+    /**
+     * Attempts to add a pawn to the game state.
+     * 
+     * @param p The pawn to potentially be placed.
+     * @return Whether the pawn was successfully placed.
+     */
     public boolean addPawn(Pawn p) {
         pawns.add(p);
         return true;
     }
-    
-    // Adds a player object
+
+    /**
+     * Adds a player to the game state.
+     * 
+     * @param p The player to add to the game state.
+     * @return TODO: Remove this? If a player is always placed we don't need to
+     *               be returning anything.
+     */
     public boolean addPlayer(Player p){
     	players.add(p);
     	return true;
     }
 
-    // Passed a pawn object and the move string
-    // Checks to see if the move is valid
-    // if it is, returns true
-    // Checks for jumping, and wall blocks
+    /**
+     * Attempts to move a given pawn to a given position.
+     * 
+     * @param p The pawn to be moved.
+     * @param move The move the pawn is attempting to execute.
+     * @return Whether the pawn could be moved.
+     * 
+     * TODO: Fix bug regarding attempts to move left and right turn one.
+     */
     public boolean movePawn(Pawn p, String move) {
         Position pos = new Position(move);
         boolean neighborJump = false;

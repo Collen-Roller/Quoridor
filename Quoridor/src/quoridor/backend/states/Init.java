@@ -11,12 +11,31 @@ import quoridor.backend.pieces.Pawn;
 import quoridor.gui.board.GameBoard;
 import quoridor.main.Quoridor;
 
+/**
+ * @author Team 4 Men And A Cripple
+ * 
+ * This class represents a state that begins a game of Quoridor.
+ */
 public class Init implements State {
 
+    /**
+     * The transitions that exist within this state.
+     */
     private HashMap<Boolean, State> transitions;
-    private final String[] startingPos = {"E1", "E9", "A5", "I5"};
-    private Image [] pawns = new Image[4];
 
+    /**
+     * The possible starting positions for pawns.
+     */
+    private final String[] startingPos = {"E1", "E9", "A5", "I5"};
+    
+    /**
+     * The images to assign to each pawn.
+     */
+    private final Image [] pawns = new Image[4];
+
+    /**
+     * Constructs a new init state and loads resources.
+     */
     public Init() {
         transitions = new HashMap<Boolean, State>();
         transitions.put(true, new Turn());
@@ -26,6 +45,9 @@ public class Init implements State {
 		pawns[3] = Toolkit.getDefaultToolkit().createImage("res/pawn_red.png");
     }
 
+    /* (non-Javadoc)
+     * @see quoridor.backend.states.State#execute()
+     */
     @Override
     public boolean execute() {
         Quoridor.newGameState();
@@ -50,6 +72,9 @@ public class Init implements State {
         return true;
     }
 
+    /* (non-Javadoc)
+     * @see quoridor.backend.states.State#transition(boolean)
+     */
     @Override
     public State transition(boolean b) {
         return transitions.get(b);
