@@ -13,29 +13,56 @@ import quoridor.backend.containers.Position;
 import quoridor.main.Quoridor;
 import quoridor.network.client.NetworkClient;
 
+/**
+ * @author Team 4 Men And A Cripple
+ * 
+ * Represents a pawn in a game of Quoridor.
+ */
 public class Pawn {
 
+    /**
+     * The position of this pawn.
+     */
     private Position pos;
+
+    /**
+     * The object handing the network connection relevant to this pawn.
+     */
     private NetworkClient networkClient;
+
+    /**
+     * The regex to determine if a move is of the correct format.
+     */
     private final String moveRegex = "[a-i][1-9][h,v]|[a-h][1-8]";
+
+    /**
+     * The graphic to be drawn on screen when this pawn is painted.
+     */
     private Image pawn;
 
-
-    // TODO: Name the pawns
-    //Why Do Pawns have to be named? each player object exists
-    //each pawn object exists with a specific pawn
-    //checkout init state how thats set up. 
-
+    /**
+     * Constructs a new pawn with the given position and associated graphic.
+     * 
+     * @param pos A string encoding of this pawns initial position.
+     * @param p The graphic representing this pawn.
+     */
     public Pawn(String pos, Image p) {
         this.pos = new Position(pos);
         this.pawn = p;
     }
     
+    /**
+     * @return The graphic representing this pawn.
+     */
     public Image getPawn(){
     	return pawn;
     }
-    
-    // Calculates the possible moves and stores them in a set
+
+    /**
+     * @return The moves this pawn can possibly make.
+     * 
+     * TODO: Implement all rules and debug.
+     */
     public Set<Position> calcMoves() {
         Set<Position> moves = new TreeSet<Position>();
         moves.add(new Position(pos.x + 1, pos.y));
@@ -50,8 +77,13 @@ public class Pawn {
         }
         return moves;
     }
-    
-    // Creates a network connection
+
+    /**
+     * Attempt to establish a TCP to the given host.
+     * 
+     * @param host The name of the host to connect to.
+     * @return Whether the connection was successfully established.
+     */
     public boolean startNetwork(String host) {
         try {
             networkClient = new NetworkClient(host);
@@ -67,13 +99,19 @@ public class Pawn {
         }
         return true;
     }
-    
-    // returns the network client
+
+    /**
+     * @return The object representing the connection relevant to this
+     *         pawn.
+     */
     public NetworkClient getClient(){
     	return networkClient;
     }
 
     
+    /**
+     * @return The move passed up from the network for this pawn to execute.
+     */
     public String getMove() {
         networkClient.sendString("MOVE?");
         String s = networkClient.getString();
@@ -84,29 +122,43 @@ public class Pawn {
         return "ERROR";
     }
 
-    // sets pos to the new position object, with the passed in input 
+    /**
+     * Updates the position of this pawn.
+     * 
+     * @param s The new position for this pawn.
+     */
     public void move(String s) {
         pos = new Position(s);
     }
 
-    // closes the network connection  for a certain pawn 
+    /**
+     * Severs the network connection for this pawn.
+     */
     public void boot() {
         for(Pawn p : Quoridor.getGameState().getPawns())
             p.networkClient.sendString("BOOTED PLAYER");
         networkClient.close();
     }
 
-    // Returns the postion object
+    /**
+     * @return The current position of this pawn.
+     */
     public Position getPosition() {
         return pos;
     }
 
-    // Prints where the pawn is located
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
     public String toString() {
         return "Pawn at: " + pos;
     }
 
-    // sets pos to the passed in position object
+    /**
+     * @param pos The new position for this pawn
+     * 
+     * TODO: This method and the move method are identical.
+     */
     public void setPosition(Position pos) {
         this.pos = pos;
     }

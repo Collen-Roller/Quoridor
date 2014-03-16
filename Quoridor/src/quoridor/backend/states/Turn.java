@@ -7,16 +7,30 @@ import quoridor.backend.containers.Player;
 import quoridor.backend.pieces.Pawn;
 import quoridor.main.Quoridor;
 
+/**
+ * @author Team 4 Men And A Cripple
+ * 
+ * This class represents a state that executes a single turn in Quoridor.
+ */
 public class Turn implements State {
 
+    /**
+     * The transitions that exist within this state.
+     */
     private HashMap<Boolean, State> transitions;
 
+    /**
+     * Constructs a new turn state.
+     */
     public Turn() {
         transitions = new HashMap<Boolean, State>();
         transitions.put(false, this);
         transitions.put(true, new Win());
     }
 
+    /* (non-Javadoc)
+     * @see quoridor.backend.states.State#execute()
+     */
     @Override
     public boolean execute() {
         // TODO: Turn resolution
@@ -61,13 +75,17 @@ public class Turn implements State {
         return false;
     }
 
+    /* (non-Javadoc)
+     * @see quoridor.backend.states.State#transition(boolean)
+     */
     @Override
     public State transition(boolean b) {
         return transitions.get(b);
     }
 
+    /* TODO: Does this method need to exist?
     void setTransition(boolean b, State s) {
         transitions.put(b, s);
-    }
+    }*/
 
 }
