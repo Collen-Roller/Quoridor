@@ -22,6 +22,8 @@ public class Loading extends JPanel implements GUIPanel {
 	private final Image spin;
 
 	private JLabel movement, load; 
+	
+	// Creates a loading screen while names are input
 	public Loading(){
 	    background = Toolkit.getDefaultToolkit()
 		.createImage("res/MenuBack.png");

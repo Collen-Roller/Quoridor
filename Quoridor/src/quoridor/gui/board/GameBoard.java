@@ -51,6 +51,9 @@ public class GameBoard extends JPanel implements GUIPanel {
 	
 	private int numberOfPlayers;
 
+	// Creates a gameboard object 
+	// Sets the background, tiles of the board, and the wall pieces
+	// Sets up the gameboard, infopannel, and console
 	public GameBoard(int numberOfPlayers) {
 		this.numberOfPlayers = numberOfPlayers;
 		UIManager.put("Tree.rendererFillBackground", false);
@@ -66,6 +69,10 @@ public class GameBoard extends JPanel implements GUIPanel {
 		setBackground(Color.MAGENTA);
 	}
 
+	// Sets up the gui, that contains the info pannel
+	// as well as the console, and the game board
+	// Creates the board by placing the tiles (every other one in the row 
+	// is the opposite)
 	public void setGameBoard() {
 		board = new Canvas() {
 
@@ -109,6 +116,9 @@ public class GameBoard extends JPanel implements GUIPanel {
 		add(board);
 	}
 	
+	
+	// Fills in the player info  in each pane corresponding 
+	// to each player on the game board
 	public void updatePlayerInfo(ArrayList<Player> p){
 		playerInfo = new ArrayList<JLabel>();
 		updateNumberOfPlayers(p.size());
@@ -159,6 +169,8 @@ public class GameBoard extends JPanel implements GUIPanel {
 	    	
 	}
 
+	// Sets up the pane that contains the current position of each player
+	// how many walls they have left, and how many moves they have made
 	public void setInfoPanel() {
 		infoBoard = new JPanel();
 		infoBoard.setLayout(null);
@@ -183,6 +195,8 @@ public class GameBoard extends JPanel implements GUIPanel {
 		add(infoBoard);
 	}
 
+	// Sets up the console that displays the messages that are sent between the
+	// Client and the server
 	public void setConsole() {
 		consolePane = new JPanel();
 		consolePane.setSize(new Dimension(705, 218));
@@ -203,6 +217,8 @@ public class GameBoard extends JPanel implements GUIPanel {
 		add(consolePane);
 	}
 	
+	// Updates the number of players, so that the info pane
+	// displays the correct number of panes
 	public void updateNumberOfPlayers(int n){
 		numberOfPlayers = n;
 	}

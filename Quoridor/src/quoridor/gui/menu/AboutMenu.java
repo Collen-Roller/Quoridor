@@ -34,6 +34,8 @@ public class AboutMenu extends JPanel implements GUIPanel {
 	
 	private JScrollPane scroll;
 
+	// Creates the about pane
+	// Sets up a back button, as well as a scroll box
 	public AboutMenu() {
 		background = Toolkit.getDefaultToolkit()
 				.createImage("res/MenuBack.png");
@@ -68,7 +70,7 @@ public class AboutMenu extends JPanel implements GUIPanel {
 		add(backBtn);
 	}
 	
-	
+	// Writes the text to the scroll box
 	private String getText(){
 		return "<html><u>Welcome to Quoridor!</u><br><br><br>This program was " +
 				"written by<br><i>4 Men and a Cripple:</i><br><br>-Benjamin Sladewski" +

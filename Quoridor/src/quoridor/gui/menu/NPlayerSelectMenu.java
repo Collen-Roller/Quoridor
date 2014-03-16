@@ -31,6 +31,8 @@ public class NPlayerSelectMenu extends JPanel implements GUIPanel {
 
 	private JButton twoPlayerBtn, fourPlayerBtn;
 
+	// Creates the player select menu
+	// Sets up the highlight of the 2 and 4 player buttons
 	public NPlayerSelectMenu() {
 		background = Toolkit.getDefaultToolkit()
 				.createImage("res/MenuBack.png");

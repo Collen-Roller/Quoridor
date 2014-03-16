@@ -15,6 +15,8 @@ public class NetworkClient {
 	private DataOutputStream outToServer;
 	private BufferedReader inFromServer;
 
+	// Creates a network connection. Sets up the socket with the host and port
+	// number. Sets up the input and output
 	public NetworkClient(String host) throws NumberFormatException,
 			UnknownHostException, IOException {
 		if (host.contains(":")) {
@@ -29,6 +31,7 @@ public class NetworkClient {
 			throw new UnknownHostException();
 	}
 
+	// Writes the string passed in to the console panel 
 	public void sendString(String s) {
 		try {
 			Quoridor.getGUI().getPanel().writeToConsole("Client: " + s);
@@ -38,6 +41,8 @@ public class NetworkClient {
 		}
 	}
 
+	// Gets input from the server, writes it to the console panel
+	// then returns it
 	public String getString() {
 		try {
 			String s = inFromServer.readLine();
@@ -50,6 +55,7 @@ public class NetworkClient {
 		return "ERROR";
 	}
 
+	// Closes the input and output to a server
 	public void close() {
 		try {
 			outToServer.close();

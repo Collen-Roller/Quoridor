@@ -30,6 +30,7 @@ public class HostInputMenu extends JPanel implements GUIPanel {
 
 	private JButton startBtn;
 
+	// Creates the input for the connections to the players/AI
 	public HostInputMenu(int players) {
 		background = Toolkit.getDefaultToolkit()
 				.createImage("res/MenuBack.png");

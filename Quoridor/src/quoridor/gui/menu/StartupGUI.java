@@ -31,6 +31,9 @@ public class StartupGUI extends JPanel implements GUIPanel {
 
 	private JButton quoridorBtn, aboutBtn;
 
+	// Creates the startup GUI
+	// Sets the background as well as the about button and the quoridor button
+	// with a rollover
 	public StartupGUI() {
 		background = Toolkit.getDefaultToolkit().createImage(
 				"res/TitleScreen.png");
