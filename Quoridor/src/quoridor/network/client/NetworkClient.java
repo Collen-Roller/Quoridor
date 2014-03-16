@@ -31,7 +31,8 @@ public class NetworkClient {
 			throw new UnknownHostException();
 	}
 
-	// Writes the string passed in to the console panel 
+	// Writes the string passed in to the console panel
+	// as well as sends out the message over the network
 	public void sendString(String s) {
 		try {
 			Quoridor.getGUI().getPanel().writeToConsole("Client: " + s);
