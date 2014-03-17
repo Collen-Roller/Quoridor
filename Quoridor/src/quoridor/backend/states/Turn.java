@@ -66,6 +66,12 @@ public class Turn implements State {
                     p.boot();
                     itr.remove();
                     itr2.remove();
+                }else if(p2.getRemainingWalls() == 0){
+                	Quoridor.getGUI().getPanel().writeToConsole(p2.getName() + " is being removed");
+                    Quoridor.getGUI().getPanel().writeToConsole("You didnt have a wall left to place :(");
+                    p.boot();
+                    itr.remove();
+                    itr2.remove();
                 }else
                 	p2.updateWalls();
             }
