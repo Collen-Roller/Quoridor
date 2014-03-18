@@ -95,7 +95,7 @@ public class Init implements State {
                 Quoridor.getGameState().addPawn(p);
                 p.getClient().sendString("Enter Player Name");
                 String name = p.getClient().getString();
-                name = checkPlayerName(name,i);
+                name = checkPlayerName(name,i+1);
                 Player player = new Player(name,p.getPosition().toString(),Quoridor.getHosts().length);
                 Quoridor.getGameState().addPlayer(player);
             }

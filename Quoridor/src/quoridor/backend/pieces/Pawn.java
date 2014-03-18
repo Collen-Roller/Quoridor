@@ -112,7 +112,8 @@ public class Pawn {
     /**
      * @return The move passed up from the network for this pawn to execute.
      */
-    public String getMove() {
+    public String getMove(String name) {
+    	sendPossibleMoves(name);
         networkClient.sendString("MOVE?");
         String s = networkClient.getString();
         Pattern r = Pattern.compile(moveRegex);
@@ -120,6 +121,14 @@ public class Pawn {
         if(m.find())
             return s;
         return "ERROR";
+    }
+    /**
+     * Sends players possible moves to the player
+     * @param name
+     */
+    public void sendPossibleMoves(String name){
+    	Set<Position> p = calcMoves();
+    	networkClient.sendString(name + " here are your possible moves to make : " + p.toString());
     }
 
     /**

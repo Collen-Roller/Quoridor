@@ -121,12 +121,10 @@ public class GameState {
      * Adds a player to the game state.
      * 
      * @param p The player to add to the game state.
-     * @return TODO: Remove this? If a player is always placed we don't need to
-     *               be returning anything.
+     * 
      */
-    public boolean addPlayer(Player p){
+    public void addPlayer(Player p){
     	players.add(p);
-    	return true;
     }
 
     /**

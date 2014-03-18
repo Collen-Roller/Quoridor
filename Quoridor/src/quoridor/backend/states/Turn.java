@@ -41,7 +41,7 @@ public class Turn implements State {
                 return true;
             Pawn p = itr.next();
             Player p2 = itr2.next();
-            String move = p.getMove().trim();
+            String move = p.getMove(p2.getName()).trim();
             if(move.equals("ERROR")) {
             	Quoridor.getGUI().getPanel().writeToConsole(p2.getName() + " is being removed");
                 Quoridor.getGUI().getPanel().writeToConsole("Invalid input.");
