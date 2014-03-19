@@ -41,6 +41,8 @@ public class Turn implements State {
                 return true;
             Pawn p = itr.next();
             Player p2 = itr2.next();
+            p.isTurn(true);
+            Quoridor.getGUI().getPanel().update();
             String move = p.getMove(p2.getName()).trim();
             if(move.equals("ERROR")) {
             	Quoridor.getGUI().getPanel().writeToConsole(p2.getName() + " is being removed");
@@ -75,8 +77,8 @@ public class Turn implements State {
                 }else
                 	p2.updateWalls();
             }
-            
-            Quoridor.getGUI().getPanel().update();
+            p.isTurn(false);
+            //Quoridor.getGUI().getPanel().update();
         }
         return false;
     }

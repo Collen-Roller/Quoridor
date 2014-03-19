@@ -44,6 +44,8 @@ public class GameBoard extends JPanel implements GUIPanel {
 	private final Image wallv;
 
 	private final Image wallh;
+	
+	private final Image moveTo;
 
 	private Image newBuffer;
 
@@ -62,6 +64,7 @@ public class GameBoard extends JPanel implements GUIPanel {
 		tileB = Toolkit.getDefaultToolkit().createImage("res/darkwood.png");
 		wallv = Toolkit.getDefaultToolkit().createImage("res/WallV.png");
 		wallh = Toolkit.getDefaultToolkit().createImage("res/WallH.png");
+		moveTo = Toolkit.getDefaultToolkit().createImage("res/light_endzone.png");
 		setLayout(null);
 		setGameBoard();
 		setInfoPanel();
@@ -69,7 +72,7 @@ public class GameBoard extends JPanel implements GUIPanel {
 		setBackground(Color.MAGENTA);
 	}
 
-	// Sets up the gui, that contains the info pannel
+	// Sets up the gui, that contains the info panel
 	// as well as the console, and the game board
 	// Creates the board by placing the tiles (every other one in the row 
 	// is the opposite)
@@ -91,11 +94,19 @@ public class GameBoard extends JPanel implements GUIPanel {
 							offscreen.drawImage(tileB, i * 44 + 6 * i + 1, j
 									* 44 + 6 * j + 1, 44, 44, this);
 					}
-				for (Pawn p : Quoridor.getGameState().getPawns())
+				for (Pawn p : Quoridor.getGameState().getPawns()){
 						offscreen.drawImage(p.getPawn(),
 							p.getPosition().x * 44 + 6 * p.getPosition().x + 1,
 							p.getPosition().y * 44 + 6 * p.getPosition().y + 1,
 							44, 44, this);
+						if(p.currentTurn())
+							for(Position pos : p.calcMoves())
+								offscreen.drawImage(moveTo,
+										pos.x * 44 + 6 * pos.x + 1,
+										pos.y * 44 + 6 * pos.y + 1,
+										44, 44, this);
+						
+				}
 				for (Position p : Quoridor.getGameState().getWalls()
 						.getWallsHorizontal().keySet()) {
 					offscreen.drawImage(wallh, p.x * 44 + 6 * p.x + 1, p.y * 44
@@ -106,6 +117,7 @@ public class GameBoard extends JPanel implements GUIPanel {
 					offscreen.drawImage(wallv, p.x * 44 + 6 * p.x + 10, p.y
 							* 44 + 6 * p.y + 1, 44, 44, this);
 				}
+				
 				g.drawImage(newBuffer, 0, 0, 450, 450, board);
 			}
 
@@ -115,8 +127,7 @@ public class GameBoard extends JPanel implements GUIPanel {
 		board.setBackground(Color.BLACK);
 		add(board);
 	}
-	
-	
+		
 	// Fills in the player info  in each pane corresponding 
 	// to each player on the game board
 	public void updatePlayerInfo(ArrayList<Player> p){
@@ -255,5 +266,5 @@ public class GameBoard extends JPanel implements GUIPanel {
 	@Override
 	public void kill() {
 	}
-
+	
 }

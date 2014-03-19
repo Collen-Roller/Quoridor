@@ -19,6 +19,11 @@ import quoridor.network.client.NetworkClient;
  * Represents a pawn in a game of Quoridor.
  */
 public class Pawn {
+	
+	/**
+	 * Boolean telling if players turn or not
+	 */
+	private boolean currentTurn;
 
     /**
      * The position of this pawn.
@@ -47,9 +52,30 @@ public class Pawn {
      * @param p The graphic representing this pawn.
      */
     public Pawn(String pos, Image p) {
+    	this.currentTurn = false;
         this.pos = new Position(pos);
         this.pawn = p;
     }
+    
+    /**
+     * Method to change if the player is in a turn
+  	 *
+     * @param b to set currentTurn to
+     */
+    public void isTurn(boolean b){
+    	currentTurn = b;
+    }
+    
+    /**
+     * Method to access if the player is in a turn
+     * 
+     * @return currentTurn
+     */
+    public boolean currentTurn(){
+    	return currentTurn;
+    }
+    
+    
     
     /**
      * @return The graphic representing this pawn.
