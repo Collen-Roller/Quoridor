@@ -7,5 +7,5 @@ public interface GUIPanel {
     public void writeToConsole(String s);
 
     public void kill();
-
+    
 }

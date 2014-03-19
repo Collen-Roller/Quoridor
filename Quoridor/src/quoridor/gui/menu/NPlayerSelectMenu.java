@@ -106,4 +106,5 @@ public class NPlayerSelectMenu extends JPanel implements GUIPanel {
 	public void writeToConsole(String s) {
 	}
 
+
 }

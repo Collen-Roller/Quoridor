@@ -60,7 +60,7 @@ public class Init implements State {
     	else{
     		startingPos = new String[2];
     		startingPos[0] = "E1";
-    		startingPos[1] = "E2";
+    		startingPos[1] = "E9";
     	}
     }
     

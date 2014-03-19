@@ -4,9 +4,9 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
+
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-
 import javax.swing.JPanel;
 
 import quoridor.gui.interfaces.GUIPanel;
@@ -74,6 +74,7 @@ public class Loading extends JPanel implements GUIPanel {
 		load=null;
 		movement=null;
 	}
+
 }
 
 

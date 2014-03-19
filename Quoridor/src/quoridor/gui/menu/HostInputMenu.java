@@ -97,4 +97,5 @@ public class HostInputMenu extends JPanel implements GUIPanel {
 	public void writeToConsole(String s) {
 	}
 
+
 }
