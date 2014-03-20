@@ -64,7 +64,7 @@ public class GameBoard extends JPanel implements GUIPanel {
 		tileB = Toolkit.getDefaultToolkit().createImage("res/darkwood.png");
 		wallv = Toolkit.getDefaultToolkit().createImage("res/WallV.png");
 		wallh = Toolkit.getDefaultToolkit().createImage("res/WallH.png");
-		moveTo = Toolkit.getDefaultToolkit().createImage("res/light_endzone.png");
+		moveTo = Toolkit.getDefaultToolkit().createImage("res/highlight_overlay.png");
 		setLayout(null);
 		setGameBoard();
 		setInfoPanel();
