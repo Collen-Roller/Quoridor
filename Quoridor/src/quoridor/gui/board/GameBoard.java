@@ -46,17 +46,32 @@ public class GameBoard extends JPanel implements GUIPanel {
 	private final Image wallh;
 	
 	private final Image moveTo;
-
+	
+	/**
+	 * Images, for endzones, both 2 player and 4 player games
+	 */
+	private final Image playerBR;
+	private final Image playerBL;
+	private final Image playerTR;
+	private final Image playerTL;
+	private final Image playerT;
+	private final Image playerB;
+	
 	private Image newBuffer;
 
 	private Graphics offscreen;
 	
 	private int numberOfPlayers;
+	
+	private final int numberOfPlayersAtStart;
 
-	// Creates a gameboard object 
-	// Sets the background, tiles of the board, and the wall pieces
-	// Sets up the gameboard, infopannel, and console
+	/** Creates a gameboard object 
+	* Sets the background, tiles of the board, and the wall pieces
+	* Sets up endzones, and highlight panel as well
+	* Sets up the gameboard, infopanel, and console
+	*/
 	public GameBoard(int numberOfPlayers) {
+		this.numberOfPlayersAtStart = numberOfPlayers;
 		this.numberOfPlayers = numberOfPlayers;
 		UIManager.put("Tree.rendererFillBackground", false);
 		background = Toolkit.getDefaultToolkit().createImage("res/image1.png");
@@ -65,25 +80,42 @@ public class GameBoard extends JPanel implements GUIPanel {
 		wallv = Toolkit.getDefaultToolkit().createImage("res/WallV.png");
 		wallh = Toolkit.getDefaultToolkit().createImage("res/WallH.png");
 		moveTo = Toolkit.getDefaultToolkit().createImage("res/highlight_overlay.png");
+		playerBL = Toolkit.getDefaultToolkit().createImage("res/4playerBL.png");
+		playerBR = Toolkit.getDefaultToolkit().createImage("res/4playerBR.png");
+		playerTL = Toolkit.getDefaultToolkit().createImage("res/4playerTL.png");
+		playerTR = Toolkit.getDefaultToolkit().createImage("res/4playerTR.png");
+		playerB = Toolkit.getDefaultToolkit().createImage("res/dark_endzone.png");
+		playerT = Toolkit.getDefaultToolkit().createImage("res/light_endzone.png");
 		setLayout(null);
 		setGameBoard();
 		setInfoPanel();
 		setConsole();
-		setBackground(Color.MAGENTA);
+		//setBackground(Color.MAGENTA); Not necessary anymore
 	}
 
-	// Sets up the gui, that contains the info panel
-	// as well as the console, and the game board
-	// Creates the board by placing the tiles (every other one in the row 
-	// is the opposite)
+	/** Sets up the GUI, that contains the info panel
+	* as well as the console, and the game board
+	* Creates the board by placing the tiles (every other one in the row 
+	* is the opposite)
+	*/
 	public void setGameBoard() {
 		board = new Canvas() {
 
 			// Determining Location: n * 44 + 6 * n + 1
 			@Override
 			public void paint(Graphics g) {
-				offscreen.setColor(Color.BLACK);
+				
+				/**
+				*offscreen.setColor(Color.BLACK);
+				*
+				*TODO: do we need this? it might be causing our 
+				*      null pointer exception in AWT....
+				*/
+				
+				//Clear the rectangle
 				offscreen.clearRect(0, 0, 450, 450);
+				
+				//Place Wood Tiles On Board
 				for (int i = 0; i < 9; i++)
 					for (int j = 0; j < 9; j++) {
 						if ((i % 2 == 0 && j % 2 == 0) || i % 2 == 1
@@ -94,6 +126,21 @@ public class GameBoard extends JPanel implements GUIPanel {
 							offscreen.drawImage(tileB, i * 44 + 6 * i + 1, j
 									* 44 + 6 * j + 1, 44, 44, this);
 					}
+				
+				//Place Endzones on Board
+				if(numberOfPlayersAtStart == 4){
+					offscreen.drawImage(playerTL, 1, 1, 44, 44, this);
+					offscreen.drawImage(playerTR, 8 * 44 + 6 * 8 + 1, 1, 44, 44, this);
+					offscreen.drawImage(playerBL, 1, 8 * 44 + 6 * 8 + 1, 44, 44, this);
+					offscreen.drawImage(playerBR, 8 * 44 + 6 * 8 + 1, 8 * 44 + 6 * 8 + 1, 44, 44, this);
+				}else{
+					offscreen.drawImage(playerT, 1, 1, 44, 44, this);
+					offscreen.drawImage(playerT, 8 * 44 + 6 * 8 + 1, 1, 44, 44, this);
+					offscreen.drawImage(playerB, 1, 8 * 44 + 6 * 8 + 1, 44, 44, this);
+					offscreen.drawImage(playerB, 8 * 44 + 6 * 8 + 1, 8 * 44 + 6 * 8 + 1, 44, 44, this);
+				}
+				
+				//Place pawns and highlighting on board
 				for (Pawn p : Quoridor.getGameState().getPawns()){
 						offscreen.drawImage(p.getPawn(),
 							p.getPosition().x * 44 + 6 * p.getPosition().x + 1,
@@ -107,17 +154,19 @@ public class GameBoard extends JPanel implements GUIPanel {
 										44, 44, this);
 						
 				}
+				//Place horizontal walls on board
 				for (Position p : Quoridor.getGameState().getWalls()
 						.getWallsHorizontal().keySet()) {
 					offscreen.drawImage(wallh, p.x * 44 + 6 * p.x + 1, p.y * 44
 							+ 6 * p.y + 10, 44, 44, this);
 				}
+				//Place vertical walls on board 
 				for (Position p : Quoridor.getGameState().getWalls()
 						.getWallsVertical().keySet()) {
 					offscreen.drawImage(wallv, p.x * 44 + 6 * p.x + 10, p.y
 							* 44 + 6 * p.y + 1, 44, 44, this);
 				}
-				
+				//draw graphics
 				g.drawImage(newBuffer, 0, 0, 450, 450, board);
 			}
 
