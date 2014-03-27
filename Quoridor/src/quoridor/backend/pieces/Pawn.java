@@ -38,7 +38,7 @@ public class Pawn {
     /**
      * The regex to determine if a move is of the correct format.
      */
-    private final String moveRegex = "[a-i][1-9][h,v]|[a-h][1-8]";
+    private final String moveRegex = "([a-h][1-8][h,v])|([a-i][1-9])";
 
     /**
      * The graphic to be drawn on screen when this pawn is painted.
@@ -134,9 +134,8 @@ public class Pawn {
     	return networkClient;
     }
 
-    
     /**
-     * @return The move passed up from the network for this pawn to execute.
+     * @return The move, passed up from the network, for this pawn to execute.
      */
     public String getMove(String name) {
     	sendPossibleMoves(name);
@@ -148,6 +147,7 @@ public class Pawn {
             return s;
         return "ERROR";
     }
+
     /**
      * Sends players possible moves to the player
      * @param name

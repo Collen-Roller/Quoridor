@@ -70,7 +70,7 @@ public class Position implements Comparable<Position> {
             return 1;
         return -1;
     }
-    
+
     // TODO: Write a test that creates a position at A1 and moves it to every
     // position on the board to I9 and checks for valid output.
 

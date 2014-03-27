@@ -20,6 +20,8 @@ public class Quoridor {
     private static StateMachine stateMachine;
 
     public static void endGame() {
+        if(stateMachine != null)
+            stateMachine.kill();
         gameState = null;
         stateMachine = null;
         mainWindow.setPanel(new StartupGUI());

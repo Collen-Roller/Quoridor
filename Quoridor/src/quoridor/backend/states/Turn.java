@@ -33,9 +33,10 @@ public class Turn implements State {
      */
     @Override
     public boolean execute() {
-        // TODO: Turn resolution
-    	Iterator<Player> itr2 = Quoridor.getGameState().getPlayer().iterator();
+        if(Quoridor.getGameState().getPawns().size() == 0)
+            return true;
         Iterator<Pawn> itr = Quoridor.getGameState().getPawns().iterator();
+        Iterator<Player> itr2 = Quoridor.getGameState().getPlayer().iterator();
         while(itr.hasNext()) {
             if(Quoridor.getGameState().hasWon())
                 return true;
@@ -45,16 +46,12 @@ public class Turn implements State {
             Quoridor.getGUI().getPanel().update();
             String move = p.getMove(p2.getName()).trim();
             if(move.equals("ERROR")) {
-            	Quoridor.getGUI().getPanel().writeToConsole(p2.getName() + " is being removed");
-                Quoridor.getGUI().getPanel().writeToConsole("Invalid input.");
-                p.boot();
+                kick(p, p2, "Invalid input.");
                 itr.remove();
                 itr2.remove();
             }else if(move.length() == 2) {
                 if(!Quoridor.getGameState().movePawn(p, move)) {
-                	Quoridor.getGUI().getPanel().writeToConsole(p2.getName() + " is being removed");
-                    Quoridor.getGUI().getPanel().writeToConsole("Invalid move.");
-                    p.boot();
+                	kick(p, p2, "Invalid move.");
                     itr.remove();
                     itr2.remove();
                 }else{
@@ -63,24 +60,33 @@ public class Turn implements State {
                 }
             } else if(move.length() == 3){
                 if(!Quoridor.getGameState().addWall(move)) {
-                	Quoridor.getGUI().getPanel().writeToConsole(p2.getName() + " is being removed");
-                    Quoridor.getGUI().getPanel().writeToConsole("Invalid wall placement.");
-                    p.boot();
+                	kick(p, p2, "Invalid wall placement");
                     itr.remove();
                     itr2.remove();
                 }else if(p2.getRemainingWalls() == 0){
-                	Quoridor.getGUI().getPanel().writeToConsole(p2.getName() + " is being removed");
-                    Quoridor.getGUI().getPanel().writeToConsole("You didnt have a wall left to place :(");
-                    p.boot();
+                	kick(p, p2, "You didn't have a wall to place.");
                     itr.remove();
                     itr2.remove();
                 }else
                 	p2.updateWalls();
             }
             p.isTurn(false);
-            //Quoridor.getGUI().getPanel().update();
         }
         return false;
+    }
+    
+    /**
+     * The frontend-side player kick routine.
+     * 
+     * @param p The pawn belonging to the player being kicked.
+     * @param p2 The player being kicked.
+     * @param message The description of why the player is being kicked.
+     */
+    private void kick(Pawn p, Player p2, String message) {
+        Quoridor.getGUI().getPanel().writeToConsole(p2.getName()
+                                                    + " is being removed");
+        Quoridor.getGUI().getPanel().writeToConsole(message);
+        p.boot();
     }
 
     /* (non-Javadoc)
@@ -90,10 +96,5 @@ public class Turn implements State {
     public State transition(boolean b) {
         return transitions.get(b);
     }
-
-    /* TODO: Does this method need to exist?
-    void setTransition(boolean b, State s) {
-        transitions.put(b, s);
-    }*/
 
 }

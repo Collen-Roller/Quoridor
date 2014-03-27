@@ -43,6 +43,13 @@ public class StateMachine {
         }
     }
     
+    /**
+     * Signals the thread to run itself out.
+     */
+    public void kill() {
+        isRunning = false;
+    }
+    
     // TODO: Write a test the makes a dummy set of states and runs them checking
     // the output of the state against the predetermined output.
 

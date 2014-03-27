@@ -38,15 +38,15 @@ public class Init implements State {
      */
     public Init() {
         transitions = new HashMap<Boolean, State>();
-        startingPositions();
         transitions.put(true, new Turn());
+        startingPositions();
         pawns[0] = Toolkit.getDefaultToolkit().createImage("res/pawn_dark.png");
 		pawns[1] = Toolkit.getDefaultToolkit().createImage("res/pawn_light.png");
 		pawns[2] = Toolkit.getDefaultToolkit().createImage("res/pawn_blue.png");
 		pawns[3] = Toolkit.getDefaultToolkit().createImage("res/pawn_red.png");
     }
-    
-    /*
+
+    /**
      * Checks how many players are playing, setting the starting positions
      */
     public void startingPositions(){
@@ -63,14 +63,14 @@ public class Init implements State {
     		startingPos[1] = "E9";
     	}
     }
-    
-    /*
-     * Checks if the player name was too big and only takes the substring(0,15)
-     * if the player doesn't enter a name, a default name is given
-     *
-     *@param String name to test against
-     *@param int playerNumber to give the player name a number 
-     *
+
+    /**
+     * Checks if the player name was too big and only takes the substring(0,15),
+     * if the player doesn't enter a name, a default name is given.
+     * 
+     * @param name String name to test against
+     * @param playerNumber Number to give the player name a number
+     * @return name
      */
     public String checkPlayerName(String name, int playerNumber){
     	if(name.equals(""))
@@ -87,7 +87,6 @@ public class Init implements State {
     @Override
     public boolean execute() {
         Quoridor.newGameState();
-        // TODO: Some indication that it is trying to connect to hosts
         Queue<String> rejected = new LinkedList<String>();
         for(int i = 0; i < Quoridor.getHosts().length; i++) {
             Pawn p = new Pawn(startingPos[i],pawns[i]);
@@ -96,7 +95,8 @@ public class Init implements State {
                 p.getClient().sendString("Enter Player Name");
                 String name = p.getClient().getString();
                 name = checkPlayerName(name,i+1);
-                Player player = new Player(name,p.getPosition().toString(),Quoridor.getHosts().length);
+                Player player = new Player(name,p.getPosition().toString(),
+                        Quoridor.getHosts().length);
                 Quoridor.getGameState().addPlayer(player);
             }
             else
@@ -105,8 +105,8 @@ public class Init implements State {
         Quoridor.getGUI().setPanel(new GameBoard(Quoridor.getHosts().length));
         while(!rejected.isEmpty())
             Quoridor.getGUI().getPanel().writeToConsole("Connection to " +
-                                                         rejected.remove() +
-                                                         " could not be established.");
+                                                        rejected.remove() +
+                                                  " could not be established.");
         return true;
     }
 

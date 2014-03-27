@@ -133,8 +133,6 @@ public class GameState {
      * @param p The pawn to be moved.
      * @param move The move the pawn is attempting to execute.
      * @return Whether the pawn could be moved.
-     * 
-     * TODO: Fix bug regarding attempts to move left and right turn one.
      */
     public boolean movePawn(Pawn p, String move) {
         Position pos = new Position(move);
@@ -148,11 +146,21 @@ public class GameState {
         			neighborJump = true;
         	}
         }
-        if(((p.calcMoves().contains(pos) && !neighborAttack)|| neighborJump) 
-        		&& !walls.isBlocked(p.getPosition(), pos)) {
+        /*if(((p.calcMoves().contains(pos) && !neighborAttack)|| neighborJump) 
+                && !walls.isBlocked(p.getPosition(), pos)) {
             p.setPosition(pos);
             return true;
-        }
+        }*/
+
+        // TODO: What the fuck? Contains should do precisely this but apparently
+        //       it doesn't. This fix will work for now but I'd like to find out
+        //       why the TreeSet contains is choking on this input.
+        for(Position po : p.calcMoves())
+            if(((pos.equals(po) && !neighborAttack)|| neighborJump) 
+                    && !walls.isBlocked(p.getPosition(), pos)) {
+                p.setPosition(pos);
+                return true;
+            }
         return false;
     }
 
