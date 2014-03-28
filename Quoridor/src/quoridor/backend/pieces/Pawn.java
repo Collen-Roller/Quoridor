@@ -3,7 +3,10 @@ package quoridor.backend.pieces;
 import java.awt.Image;
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
@@ -44,6 +47,8 @@ public class Pawn {
      * The graphic to be drawn on screen when this pawn is painted.
      */
     private Image pawn;
+    
+    private Position[] currentMoves;
 
     /**
      * Constructs a new pawn with the given position and associated graphic.
@@ -74,9 +79,7 @@ public class Pawn {
     public boolean currentTurn(){
     	return currentTurn;
     }
-    
-    
-    
+
     /**
      * @return The graphic representing this pawn.
      */
@@ -90,6 +93,7 @@ public class Pawn {
      * TODO: Implement all rules and debug.
      */
     public Set<Position> calcMoves() {
+        Queue<Position> toAdd = new LinkedList<Position>();
         Set<Position> moves = new TreeSet<Position>();
         moves.add(new Position(pos.x + 1, pos.y));
         moves.add(new Position(pos.x, pos.y + 1));
@@ -98,9 +102,50 @@ public class Pawn {
         Iterator<Position> itr = moves.iterator();
         while(itr.hasNext()) {
             Position p = itr.next();
-            if(p.x < 0 || p.y < 0 || p.x > 8 || p.y > 8)
+            if(p.x < 0 || p.y < 0 || p.x > 8 || p.y > 8
+                    || Quoridor.getGameState().getWalls().isBlocked(pos, p))
                 itr.remove();
         }
+        itr = moves.iterator();
+        while(itr.hasNext()) {
+            Position p = itr.next();
+            for(Pawn pa : Quoridor.getGameState().getPawns())
+                if(!pa.equals(this) && pa.pos.equals(p)) {
+                    itr.remove();
+                    toAdd.addAll(pa.calcMovesRecurse(this));
+                }
+        }
+        moves.addAll(toAdd);
+        moves.toArray(currentMoves = new Position[moves.size()]);
+        return moves;
+    }
+
+    public Set<Position> calcMovesRecurse(Pawn po) {
+        Queue<Position> toAdd = new LinkedList<Position>();
+        Set<Position> moves = new TreeSet<Position>();
+        moves.add(new Position(pos.x + 1, pos.y));
+        moves.add(new Position(pos.x, pos.y + 1));
+        moves.add(new Position(pos.x - 1, pos.y));
+        moves.add(new Position(pos.x, pos.y - 1));
+        Iterator<Position> itr = moves.iterator();
+        while(itr.hasNext()) {
+            Position p = itr.next();
+            if(p.x < 0 || p.y < 0 || p.x > 8 || p.y > 8
+                    || Quoridor.getGameState().getWalls().isBlocked(pos, p))
+                itr.remove();
+        }
+        itr = moves.iterator();
+        while(itr.hasNext()) {
+            Position p = itr.next();
+            for(Pawn pa : Quoridor.getGameState().getPawns())
+                if(pa.pos.equals(p)) {
+                    itr.remove();
+                    if(!pa.equals(this) && !pa.equals(po))
+                        toAdd.addAll(pa.calcMovesRecurse(this));
+                    break;
+            }
+        }
+        moves.addAll(toAdd);
         return moves;
     }
 
@@ -153,8 +198,8 @@ public class Pawn {
      * @param name
      */
     public void sendPossibleMoves(String name){
-    	Set<Position> p = calcMoves();
-    	networkClient.sendString(name + " here are your possible moves to make : " + p.toString());
+    	networkClient.sendString(name + " here are your possible moves to"
+    	                     + " make : " + Arrays.toString(getCurrentMoves()));
     }
 
     /**
@@ -196,6 +241,12 @@ public class Pawn {
      */
     public void setPosition(Position pos) {
         this.pos = pos;
+    }
+
+    public Position[] getCurrentMoves() {
+        //if(currentMoves == null)
+            //calcMoves();
+        return currentMoves;
     }
 
 }

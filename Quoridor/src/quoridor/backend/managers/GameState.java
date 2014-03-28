@@ -136,28 +136,12 @@ public class GameState {
      */
     public boolean movePawn(Pawn p, String move) {
         Position pos = new Position(move);
-        boolean neighborJump = false;
-        boolean neighborAttack = false;
-        for(int i=0; i<pawns.size(); i++){
-        	if(p.calcMoves().contains(pawns.get(i).getPosition())){
-        		if(pawns.get(i).getPosition().equals(pos))
-        			neighborAttack = true;
-        		if(pawns.get(i).calcMoves().contains(pos))
-        			neighborJump = true;
-        	}
-        }
-        /*if(((p.calcMoves().contains(pos) && !neighborAttack)|| neighborJump) 
-                && !walls.isBlocked(p.getPosition(), pos)) {
-            p.setPosition(pos);
-            return true;
-        }*/
 
         // TODO: What the fuck? Contains should do precisely this but apparently
         //       it doesn't. This fix will work for now but I'd like to find out
         //       why the TreeSet contains is choking on this input.
-        for(Position po : p.calcMoves())
-            if(((pos.equals(po) && !neighborAttack)|| neighborJump) 
-                    && !walls.isBlocked(p.getPosition(), pos)) {
+        for(Position po : p.getCurrentMoves())
+            if(pos.equals(po)) {
                 p.setPosition(pos);
                 return true;
             }

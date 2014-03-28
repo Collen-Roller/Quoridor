@@ -139,15 +139,15 @@ public class GameBoard extends JPanel implements GUIPanel {
 					offscreen.drawImage(playerB, 1, 8 * 44 + 6 * 8 + 1, 44, 44, this);
 					offscreen.drawImage(playerB, 8 * 44 + 6 * 8 + 1, 8 * 44 + 6 * 8 + 1, 44, 44, this);
 				}
-				
+
 				//Place pawns and highlighting on board
-				for (Pawn p : Quoridor.getGameState().getPawns()){
+				for (Pawn p : Quoridor.getGameState().getPawns()) {
 						offscreen.drawImage(p.getPawn(),
 							p.getPosition().x * 44 + 6 * p.getPosition().x + 1,
 							p.getPosition().y * 44 + 6 * p.getPosition().y + 1,
 							44, 44, this);
 						if(p.currentTurn())
-							for(Position pos : p.calcMoves())
+							for(Position pos : p.getCurrentMoves())
 								offscreen.drawImage(moveTo,
 										pos.x * 44 + 6 * pos.x + 1,
 										pos.y * 44 + 6 * pos.y + 1,

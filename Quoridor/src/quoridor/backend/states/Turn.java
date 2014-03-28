@@ -41,6 +41,7 @@ public class Turn implements State {
             if(Quoridor.getGameState().hasWon())
                 return true;
             Pawn p = itr.next();
+            p.calcMoves();
             Player p2 = itr2.next();
             p.isTurn(true);
             Quoridor.getGUI().getPanel().update();
