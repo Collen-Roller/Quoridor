@@ -3,6 +3,7 @@ package quoridor.backend.pieces;
 import java.awt.Image;
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -112,7 +113,10 @@ public class Pawn {
             for(Pawn pa : Quoridor.getGameState().getPawns())
                 if(!pa.equals(this) && pa.pos.equals(p)) {
                     itr.remove();
-                    toAdd.addAll(pa.calcMovesRecurse(this));
+                    ArrayList<Pawn> po = new ArrayList<Pawn>();
+                    po.add(this);
+                    po.add(pa);
+                    toAdd.addAll(pa.calcMovesRecurse(po));
                 }
         }
         moves.addAll(toAdd);
@@ -120,7 +124,7 @@ public class Pawn {
         return moves;
     }
 
-    public Set<Position> calcMovesRecurse(Pawn po) {
+    public Set<Position> calcMovesRecurse(ArrayList<Pawn> po) {
         Queue<Position> toAdd = new LinkedList<Position>();
         Set<Position> moves = new TreeSet<Position>();
         moves.add(new Position(pos.x + 1, pos.y));
@@ -140,8 +144,10 @@ public class Pawn {
             for(Pawn pa : Quoridor.getGameState().getPawns())
                 if(pa.pos.equals(p)) {
                     itr.remove();
-                    if(!pa.equals(this) && !pa.equals(po))
-                        toAdd.addAll(pa.calcMovesRecurse(this));
+                    if(!po.contains(pa)) {
+                        po.add(pa);
+                        toAdd.addAll(pa.calcMovesRecurse(po));
+                    }
                     break;
             }
         }
