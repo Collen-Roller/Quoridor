@@ -50,6 +50,8 @@ public class Pawn {
     private Image pawn;
     
     private Position[] currentMoves;
+    
+    private String winRegex;
 
     /**
      * Constructs a new pawn with the given position and associated graphic.
@@ -58,9 +60,41 @@ public class Pawn {
      * @param p The graphic representing this pawn.
      */
     public Pawn(String pos, Image p) {
+    	setWinCondition(pos);
     	this.currentTurn = false;
         this.pos = new Position(pos);
         this.pawn = p;
+    }
+    
+    /**
+     *
+     * Declares the REGEX for such player to win a game
+     * 
+     * @param pos
+     */
+    public void setWinCondition(String pos){
+    	if(pos.equals("E1")){
+    		this.winRegex = "([a-i][9])";
+    	}else if(pos.equals("E9")){
+    		this.winRegex = "([a-i][1])";
+    	}else if(pos.equals("I5")){
+    		this.winRegex = "([a][1-9])";
+    	}else{
+    		this.winRegex = "([i][1-9])";
+    	}
+    }
+    
+    public boolean didPawnWin(){
+        Pattern r = Pattern.compile(winRegex);
+        Matcher m = r.matcher(pos.toString());
+        if(m.find()){
+        	return true;
+        }else 
+        	return false;
+    }
+    
+    public void sendMessageToPlayer(String s){
+    	networkClient.sendString(s);
     }
     
     /**

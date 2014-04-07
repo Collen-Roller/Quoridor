@@ -100,8 +100,10 @@ public class GameState {
      * 
      * TODO: Add the full win condition to the game.
      */
-    public boolean hasWon() {
-        if(pawns.size() < 2)
+    public boolean hasWon(Pawn p) {
+    	if(p.didPawnWin()){
+    		return true;
+    	}if(pawns.size() < 2)
             return true;
         return false;
     }
