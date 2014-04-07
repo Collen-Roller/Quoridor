@@ -35,7 +35,7 @@ public class Loading extends JPanel implements GUIPanel {
 	    //new JLabels
 	    movement = new JLabel(new ImageIcon(spin));	    
 	    load = new JLabel(new ImageIcon(loading_but));
-	    movement.setOpaque(true);
+	    movement.setOpaque(false);
 	    movement.setBackground(new Color(0,0,0,0));
 	    load.setOpaque(true);
 	    load.setBackground(new Color(0,0,0,0));
