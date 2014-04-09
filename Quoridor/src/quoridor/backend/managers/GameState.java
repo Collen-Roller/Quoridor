@@ -28,11 +28,14 @@ public class GameState {
      * A reference to the walls in the game of Quoridor.
      */
     private Walls walls;
+    
+    private Player winner;
 
     /**
      * Constructs a new, clean game state.
      */
     public GameState() {
+        winner = null;
     	players = new ArrayList<Player>();
         pawns = new ArrayList<Pawn>();
         walls = new Walls();
@@ -100,8 +103,10 @@ public class GameState {
      * 
      * TODO: Add the full win condition to the game.
      */
-    public boolean hasWon() {
-        if(pawns.size() < 2)
+    public boolean hasWon(Pawn p) {
+    	if(p.didPawnWin()){
+    		return true;
+    	}if(pawns.size() < 2)
             return true;
         return false;
     }
@@ -146,6 +151,14 @@ public class GameState {
                 return true;
             }
         return false;
+    }
+
+    public void setWinner(Player p) {
+        winner = p;
+    }
+    
+    public Player getWinner() {
+        return winner;
     }
 
 }

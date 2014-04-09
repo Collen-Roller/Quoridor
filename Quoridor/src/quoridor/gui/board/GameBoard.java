@@ -104,14 +104,13 @@ public class GameBoard extends JPanel implements GUIPanel {
 			// Determining Location: n * 44 + 6 * n + 1
 			@Override
 			public void paint(Graphics g) {
-				
-				/**
-				*offscreen.setColor(Color.BLACK);
-				*
-				*TODO: do we need this? it might be causing our 
-				*      null pointer exception in AWT....
-				*/
-				
+
+			    // The fix for the null pointer exception, if the game was cleaned
+			    // up the game state will be null so when the buffer tries to use
+			    // it for drawing we get a null pointer exception.
+				if(Quoridor.getGameState() == null)
+				    return;
+
 				//Clear the rectangle
 				offscreen.clearRect(0, 0, 450, 450);
 				

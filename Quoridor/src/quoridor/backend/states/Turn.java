@@ -38,11 +38,11 @@ public class Turn implements State {
         Iterator<Pawn> itr = Quoridor.getGameState().getPawns().iterator();
         Iterator<Player> itr2 = Quoridor.getGameState().getPlayer().iterator();
         while(itr.hasNext()) {
-            if(Quoridor.getGameState().hasWon())
-                return true;
+        	
             Pawn p = itr.next();
-            p.calcMoves();
             Player p2 = itr2.next();
+            
+            p.calcMoves();
             p.isTurn(true);
             Quoridor.getGUI().getPanel().update();
             String move = p.getMove(p2.getName()).trim();
@@ -72,6 +72,14 @@ public class Turn implements State {
                 	p2.updateWalls();
             }
             p.isTurn(false);
+            if(Quoridor.getGameState().hasWon(p)){
+            	p.sendMessageToPlayer("You have won!!!!!!");
+            	Quoridor.getGUI().getPanel().writeToConsole(p2.getName() + " has won the game!");
+            	//maybe play some sound to everyone! 
+            	Quoridor.getGUI().getPanel().update();
+            	Quoridor.getGameState().setWinner(p2);
+            	return true;
+            }
         }
         return false;
     }
