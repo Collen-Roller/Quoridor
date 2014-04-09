@@ -77,14 +77,7 @@ public class Turn implements State {
             	Quoridor.getGUI().getPanel().writeToConsole(p2.getName() + " has won the game!");
             	//maybe play some sound to everyone! 
             	Quoridor.getGUI().getPanel().update();
-            	
-            	
-            	try {
-					Thread.sleep(5000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+            	Quoridor.getGameState().setWinner(p2);
             	return true;
             }
         }

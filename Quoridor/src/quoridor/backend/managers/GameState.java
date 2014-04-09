@@ -28,11 +28,14 @@ public class GameState {
      * A reference to the walls in the game of Quoridor.
      */
     private Walls walls;
+    
+    private Player winner;
 
     /**
      * Constructs a new, clean game state.
      */
     public GameState() {
+        winner = null;
     	players = new ArrayList<Player>();
         pawns = new ArrayList<Pawn>();
         walls = new Walls();
@@ -148,6 +151,14 @@ public class GameState {
                 return true;
             }
         return false;
+    }
+
+    public void setWinner(Player p) {
+        winner = p;
+    }
+    
+    public Player getWinner() {
+        return winner;
     }
 
 }
