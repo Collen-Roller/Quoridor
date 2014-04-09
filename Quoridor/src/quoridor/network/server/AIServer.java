@@ -29,7 +29,7 @@ public class AIServer extends Thread {
 
 		ServerSocket svr = new ServerSocket(serverPort);
 
-		while(true) {
+		while(true && nclient < 5) {
 	    	Socket s = svr.accept();
 	    	new AIServer(s).start();
 		}
@@ -52,6 +52,7 @@ public class AIServer extends Thread {
     		out.println(line);
     	    }
     	    s.close();
+			nclient--;
     	} catch (Exception e) {
     	}
 		
