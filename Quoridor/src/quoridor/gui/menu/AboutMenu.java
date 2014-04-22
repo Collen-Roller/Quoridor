@@ -62,7 +62,6 @@ public class AboutMenu extends JPanel implements GUIPanel {
 		scroll = new JScrollPane(info);
 		scroll.setSize(250, 170);
 		scroll.setVisible(true);
-		System.out.println(scroll.toString());
 		scroll.setLocation((Quoridor.WIDTH - scroll.getWidth())/2, 225);
 
 		add(scroll);

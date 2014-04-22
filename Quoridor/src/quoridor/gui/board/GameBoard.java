@@ -111,6 +111,12 @@ public class GameBoard extends JPanel implements GUIPanel {
 				if(Quoridor.getGameState() == null)
 				    return;
 
+				if (newBuffer == null || offscreen == null) {
+					newBuffer = board.createImage(450, 450);
+					offscreen = newBuffer.getGraphics();
+				}
+				
+				
 				//Clear the rectangle
 				offscreen.clearRect(0, 0, 450, 450);
 				
@@ -283,10 +289,6 @@ public class GameBoard extends JPanel implements GUIPanel {
 	}
 
 	public void paintComponent(Graphics g) {
-		if (newBuffer == null || offscreen == null) {
-			newBuffer = board.createImage(450, 450);
-			offscreen = newBuffer.getGraphics();
-		}
 		g.drawImage(background, 0, 0, this);
 	}
 
