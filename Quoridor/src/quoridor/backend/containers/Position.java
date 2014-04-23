@@ -27,7 +27,7 @@ public class Position implements Comparable<Position> {
     public Position(String pos) {
         pos = pos.toLowerCase();
         x = (int) pos.charAt(0) - 97;
-        y = (int) pos.charAt(1) - 48;
+        y = (int) pos.charAt(1) - 49;
     }
 
     /**
@@ -38,7 +38,7 @@ public class Position implements Comparable<Position> {
      */
     public Position(int x, int y) {
         this.x = x;
-        this.y = y;
+        this.y = y+1;
     }
 
     /* (non-Javadoc)
