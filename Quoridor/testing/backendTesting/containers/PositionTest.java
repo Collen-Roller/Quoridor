@@ -25,14 +25,14 @@ public class PositionTest {
 	@Test
 	public void testEqualsIntVsStringParameters(){
 		Position a = new Position(3,2);
-		Position b = new Position("D2");
+		Position b = new Position("D3");
 		Assert.assertTrue(a.equals(b));
 	}
 	
 	@Test
 	public void testEqualsUpperVsLowerCaseStringParams(){
-		Position a = new Position("D2");
-		Position b = new Position("d2");
+		Position a = new Position("D3");
+		Position b = new Position("d3");
 		Assert.assertTrue(a.equals(b));
 	}
 	
@@ -46,13 +46,13 @@ public class PositionTest {
 	@Test
 	public void testNonEqualIntVsStringParameters(){
 		Position a = new Position(3,2);
-		Position b = new Position("C2");
+		Position b = new Position("c2");
 		Assert.assertFalse(a.equals(b));
 	}
 	
 	@Test
 	public void testToString(){
-		String a = "d2";
+		String a = "d3";
 		Position b = new Position(a);
 		Assert.assertEquals(a, b.toString());
 	}
@@ -60,7 +60,7 @@ public class PositionTest {
 	@Test
 	public void testToStringFromIntParam(){
 		Position a = new Position(3, 2);
-		Assert.assertEquals("d2", a.toString());
+		Assert.assertEquals("d3", a.toString());
 	}
 	
 	@Test
@@ -117,6 +117,22 @@ public class PositionTest {
 		Position b = new Position(4,1);
 		int num = a.compareTo(b);
 		Assert.assertEquals(1, num);
+	}
+	
+	@Test
+	public void testCompareToWithEqualIntVsStringParams(){
+		Position a = new Position(3,2);
+		Position b = new Position("d3");
+		int zero = a.compareTo(b);
+		Assert.assertEquals(0, zero);
+	}
+	
+	@Test
+	public void testCompareToWithEqualStringParams(){
+		Position a = new Position("D3");
+		Position b = new Position("d3");
+		int zero = a.compareTo(b);
+		Assert.assertEquals(0, zero);
 	}
 }
 
