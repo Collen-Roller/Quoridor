@@ -79,7 +79,7 @@ public class Pawn {
     		this.winRegex = "([a-i][1])";
     	}else if(pos.equals("I5")){
     		this.winRegex = "([a][1-9])";
-    	}else{
+    	}else if(pos.equals("A5")){
     		this.winRegex = "([i][1-9])";
     	}
     }
