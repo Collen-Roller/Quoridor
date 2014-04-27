@@ -84,6 +84,16 @@ public class Pawn {
     	}
     }
     
+    /**
+    *
+    * Returns the winRegex. Used for testing purposes
+    * 
+    * @param pos
+    */
+    public String getWinCondition(){
+    	return winRegex;
+    }
+    
     public boolean didPawnWin(){
         Pattern r = Pattern.compile(winRegex);
         Matcher m = r.matcher(pos.toString());
