@@ -38,7 +38,7 @@ public class Position implements Comparable<Position> {
      */
     public Position(int x, int y) {
         this.x = x;
-        this.y = y+1;
+        this.y = y;
     }
 
     /* (non-Javadoc)
