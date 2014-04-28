@@ -9,7 +9,6 @@ import junit.framework.*;
 
 import quoridor.backend.containers.Position;
 
-@SuppressWarnings("deprecation")
 public class PositionTest extends TestCase{
 
 	
