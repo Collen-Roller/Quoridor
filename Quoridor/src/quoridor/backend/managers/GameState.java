@@ -141,10 +141,6 @@ public class GameState {
      */
     public boolean movePawn(Pawn p, String move) {
         Position pos = new Position(move);
-
-        // TODO: What the fuck? Contains should do precisely this but apparently
-        //       it doesn't. This fix will work for now but I'd like to find out
-        //       why the TreeSet contains is choking on this input.
         for(Position po : p.getCurrentMoves())
             if(pos.equals(po)) {
                 p.setPosition(pos);

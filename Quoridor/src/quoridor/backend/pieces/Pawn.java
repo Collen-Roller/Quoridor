@@ -14,6 +14,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import quoridor.backend.containers.Position;
+import quoridor.backend.managers.ShortestPath;
 import quoridor.main.Quoridor;
 import quoridor.network.client.NetworkClient;
 
@@ -52,6 +53,8 @@ public class Pawn {
     private Position[] currentMoves;
     
     private String winRegex;
+    
+    private String start; // TODO: Remove this line.
 
     /**
      * Constructs a new pawn with the given position and associated graphic.
@@ -61,6 +64,7 @@ public class Pawn {
      */
     public Pawn(String pos, Image p) {
     	setWinCondition(pos);
+    	start = pos; // TODO: Remove this line.
     	this.currentTurn = false;
         this.pos = new Position(pos);
         this.pawn = p;
@@ -134,8 +138,6 @@ public class Pawn {
 
     /**
      * @return The moves this pawn can possibly make.
-     * 
-     * TODO: Implement all rules and debug.
      */
     public Set<Position> calcMoves() {
         Queue<Position> toAdd = new LinkedList<Position>();
@@ -233,14 +235,34 @@ public class Pawn {
      * @return The move, passed up from the network, for this pawn to execute.
      */
     public String getMove(String name) {
+    	try {
+			Thread.sleep(500);
+		} catch (InterruptedException e1) {}
+    	ShortestPath sp = null;
+    	if(start.equals("E1")){
+    		sp = new ShortestPath(this, new Position("E9"));
+    	}else if(start.equals("E9")){
+    		sp = new ShortestPath(this, new Position("E1"));
+    	}else if(start.equals("I5")){
+    		sp = new ShortestPath(this, new Position("A5"));
+    	}else if(start.equals("A5")){
+    		sp = new ShortestPath(this, new Position("I5"));
+    	}
+    	return sp.getPath().get(0).toString();
+    	/*
     	sendPossibleMoves(name);
         networkClient.sendString("MOVE?");
         String s = networkClient.getString();
         Pattern r = Pattern.compile(moveRegex);
+        try {
         Matcher m = r.matcher(s);
         if(m.find())
             return s;
+        } catch(NullPointerException e) {
+        	return "ERROR";
+        }
         return "ERROR";
+        */
     }
 
     /**
