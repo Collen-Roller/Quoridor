@@ -314,6 +314,7 @@ public class Pawn {
     public void setPosition(Position pos) {
         this.pos = pos;
     }
+    
 
     public Position[] getCurrentMoves() {
         //if(currentMoves == null)
