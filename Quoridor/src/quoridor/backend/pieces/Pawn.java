@@ -13,6 +13,7 @@ import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import quoridor.backend.containers.Player;
 import quoridor.backend.containers.Position;
 import quoridor.backend.managers.ShortestPath;
 import quoridor.main.Quoridor;
@@ -53,8 +54,8 @@ public class Pawn {
     private Position[] currentMoves;
     
     private String winRegex;
-    
-    private String start; // TODO: Remove this line.
+
+    private ShortestPath path;
 
     /**
      * Constructs a new pawn with the given position and associated graphic.
@@ -64,7 +65,6 @@ public class Pawn {
      */
     public Pawn(String pos, Image p) {
     	setWinCondition(pos);
-    	start = pos; // TODO: Remove this line.
     	this.currentTurn = false;
         this.pos = new Position(pos);
         this.pawn = p;
@@ -98,6 +98,11 @@ public class Pawn {
     	return winRegex;
     }
     
+    /**
+     * Checks if this pawn has reached its endzone.
+     * 
+     * @return Whether this pawn has reached its endzone.
+     */
     public boolean didPawnWin(){
         Pattern r = Pattern.compile(winRegex);
         Matcher m = r.matcher(pos.toString());
@@ -107,6 +112,11 @@ public class Pawn {
         	return false;
     }
     
+    /**
+     * Sends a string message to the server this pawn represents.
+     * 
+     * @param s The message to send.
+     */
     public void sendMessageToPlayer(String s){
     	networkClient.sendString(s);
     }
@@ -137,9 +147,34 @@ public class Pawn {
     }
 
     /**
-     * @return The moves this pawn can possibly make.
+     * Generates the shortest path to this pawns endzone.
+     * 
+     * @param w The walls to consider in path-finding.
+     * @param pawns The other pawns that exist in this pawn's game state.
+     * @return The shortest path to this pawns endzone.
+     */
+    public ArrayList<Position> genPath(Walls w, ArrayList<Pawn> pawns) {
+        path = new ShortestPath(this, (Position) null, w, pawns);
+        if(path != null)
+            return path.getPath();
+        return null;
+    }
+
+    /**
+     * Calls this pawns calcMoves method with the typical client parameters.
+     * Does NOT work for calling calc moves on the server.
+     * 
+     * @return The calculated set of positions this pawn can move to.
      */
     public Set<Position> calcMoves() {
+        return calcMoves(Quoridor.getGameState().getWalls(),
+                Quoridor.getGameState().getPawns());
+    }
+
+    /**
+     * @return The moves this pawn can possibly make.
+     */
+    public Set<Position> calcMoves(Walls w, ArrayList<Pawn> pawns) {
         Queue<Position> toAdd = new LinkedList<Position>();
         Set<Position> moves = new TreeSet<Position>();
         moves.add(new Position(pos.x + 1, pos.y));
@@ -150,19 +185,19 @@ public class Pawn {
         while(itr.hasNext()) {
             Position p = itr.next();
             if(p.x < 0 || p.y < 0 || p.x > 8 || p.y > 8
-                    || Quoridor.getGameState().getWalls().isBlocked(pos, p))
+                    || w.isBlocked(pos, p))
                 itr.remove();
         }
         itr = moves.iterator();
         while(itr.hasNext()) {
             Position p = itr.next();
-            for(Pawn pa : Quoridor.getGameState().getPawns())
+            for(Pawn pa : pawns)
                 if(!pa.equals(this) && pa.pos.equals(p)) {
                     itr.remove();
                     ArrayList<Pawn> po = new ArrayList<Pawn>();
                     po.add(this);
                     po.add(pa);
-                    toAdd.addAll(pa.calcMovesRecurse(po));
+                    toAdd.addAll(pa.calcMovesRecurse(po, w, pawns));
                 }
         }
         moves.addAll(toAdd);
@@ -170,7 +205,15 @@ public class Pawn {
         return moves;
     }
 
-    public Set<Position> calcMovesRecurse(ArrayList<Pawn> po) {
+    /**
+     * Calculates the moves this pawn can possibly make.
+     * 
+     * @param po The position being considered.
+     * @param w The wall configuration of the game state.
+     * @param pawns The other pawns in this pawn's game state.
+     * @return The set of positions this pawn can move to.
+     */
+    public Set<Position> calcMovesRecurse(ArrayList<Pawn> po, Walls w, ArrayList<Pawn> pawns) {
         Queue<Position> toAdd = new LinkedList<Position>();
         Set<Position> moves = new TreeSet<Position>();
         moves.add(new Position(pos.x + 1, pos.y));
@@ -181,18 +224,18 @@ public class Pawn {
         while(itr.hasNext()) {
             Position p = itr.next();
             if(p.x < 0 || p.y < 0 || p.x > 8 || p.y > 8
-                    || Quoridor.getGameState().getWalls().isBlocked(pos, p))
+                    || w.isBlocked(pos, p))
                 itr.remove();
         }
         itr = moves.iterator();
         while(itr.hasNext()) {
             Position p = itr.next();
-            for(Pawn pa : Quoridor.getGameState().getPawns())
+            for(Pawn pa : pawns)
                 if(pa.pos.equals(p)) {
                     itr.remove();
                     if(!po.contains(pa)) {
                         po.add(pa);
-                        toAdd.addAll(pa.calcMovesRecurse(po));
+                        toAdd.addAll(pa.calcMovesRecurse(po, w, pawns));
                     }
                     break;
             }
@@ -235,22 +278,7 @@ public class Pawn {
      * @return The move, passed up from the network, for this pawn to execute.
      */
     public String getMove(String name) {
-    	try {
-			Thread.sleep(500);
-		} catch (InterruptedException e1) {}
-    	ShortestPath sp = null;
-    	if(start.equals("E1")){
-    		sp = new ShortestPath(this, new Position("E9"));
-    	}else if(start.equals("E9")){
-    		sp = new ShortestPath(this, new Position("E1"));
-    	}else if(start.equals("I5")){
-    		sp = new ShortestPath(this, new Position("A5"));
-    	}else if(start.equals("A5")){
-    		sp = new ShortestPath(this, new Position("I5"));
-    	}
-    	return sp.getPath().get(0).toString();
-    	/*
-    	sendPossibleMoves(name);
+    	//sendPossibleMoves(name);
         networkClient.sendString("MOVE?");
         String s = networkClient.getString();
         Pattern r = Pattern.compile(moveRegex);
@@ -262,7 +290,6 @@ public class Pawn {
         	return "ERROR";
         }
         return "ERROR";
-        */
     }
 
     /**
@@ -286,9 +313,9 @@ public class Pawn {
     /**
      * Severs the network connection for this pawn.
      */
-    public void boot() {
+    public void boot(Player pl) {
         for(Pawn p : Quoridor.getGameState().getPawns())
-            p.networkClient.sendString("BOOTED PLAYER");
+            p.networkClient.sendString("REMOVED " + pl.getName());
         networkClient.close();
     }
 
@@ -297,6 +324,16 @@ public class Pawn {
      */
     public Position getPosition() {
         return pos;
+    }
+    
+    /**
+     * Determines if this pawn and another are the same pawn.
+     * 
+     * @param p The pawn that may be the same pawn.
+     * @return Whether these pawns are considered the same.
+     */
+    public boolean equals(Pawn p) {
+        return pos.equals(p.pos);
     }
 
     /* (non-Javadoc)
@@ -315,9 +352,12 @@ public class Pawn {
         this.pos = pos;
     }
 
+    /**
+     * Gets the current generated possible moves for this pawn.
+     * 
+     * @return The possible moves this pawn can make.
+     */
     public Position[] getCurrentMoves() {
-        //if(currentMoves == null)
-            //calcMoves();
         return currentMoves;
     }
 

@@ -22,45 +22,83 @@ import quoridor.backend.pieces.Pawn;
 import quoridor.gui.interfaces.GUIPanel;
 import quoridor.main.Quoridor;
 
+/**
+ * @author Team 4 Men And A Cripple
+ * @version 2014-05-04
+ */
 @SuppressWarnings("serial")
 public class GameBoard extends JPanel implements GUIPanel {
 
+	/**
+	 * The canvas the game board is drawn onto.
+	 */
 	private Canvas board;
 
+	/**
+	 * The panel that contains the player information.
+	 */
 	private JPanel infoBoard;
 
+	/**
+	 * The panel that contains the console.
+	 */
 	private JPanel consolePane;
 	
+	/**
+	 * The label for displaying player information.
+	 */
 	private ArrayList <JLabel> playerInfo;
 
+	/**
+	 * The text area that displays inbound and outbound messages to/from the
+	 * servers.
+	 */
 	private JTextArea console;
 
+	/**
+	 * The background image for the game board.
+	 */
 	private final Image background;
 
-	private final Image tileA;
-
-	private final Image tileB;
+	/**
+	 * The images for alternating tiles on the game board.
+	 */
+	private final Image tileA, tileB;
 	
+	/**
+	 * The image for a vertical wall.
+	 */
 	private final Image wallv;
 
+	/**
+	 * The image for a horizontal wall.
+	 */
 	private final Image wallh;
 	
+	/**
+	 * The highlighting on a position a pawn can move to.
+	 */
 	private final Image moveTo;
 	
 	/**
 	 * Images, for endzones, both 2 player and 4 player games
 	 */
-	private final Image playerBR;
-	private final Image playerBL;
-	private final Image playerTR;
-	private final Image playerTL;
-	private final Image playerT;
-	private final Image playerB;
+	private final Image playerBR, playerBL, playerTR, playerTL, playerT,
+	    playerB;
 	
+	/**
+	 * The buffer used for double buffering.
+	 */
 	private Image newBuffer;
 
+	/**
+	 * The graphics object drawn to for double buffering.
+	 */
 	private Graphics offscreen;
 	
+	/**
+	 * The number of players in the game.
+	 */
 	private int numberOfPlayers;
 	
 	private final int numberOfPlayersAtStart;
@@ -181,9 +219,13 @@ public class GameBoard extends JPanel implements GUIPanel {
 		board.setBackground(Color.BLACK);
 		add(board);
 	}
-		
-	// Fills in the player info  in each pane corresponding 
-	// to each player on the game board
+
+	/**
+	 * Fills in the player info  in each pane corresponding 
+	 * to each player on the game board.
+	 * 
+	 * @param p
+	 */
 	public void updatePlayerInfo(ArrayList<Player> p){
 		playerInfo = new ArrayList<JLabel>();
 		updateNumberOfPlayers(p.size());
@@ -234,8 +276,10 @@ public class GameBoard extends JPanel implements GUIPanel {
 	    	
 	}
 
-	// Sets up the pane that contains the current position of each player
-	// how many walls they have left, and how many moves they have made
+	/**
+	 * Sets up the pane that contains the current position of each player
+	 * how many walls they have left, and how many moves they have made
+	 */
 	public void setInfoPanel() {
 		infoBoard = new JPanel();
 		infoBoard.setLayout(null);
@@ -260,8 +304,10 @@ public class GameBoard extends JPanel implements GUIPanel {
 		add(infoBoard);
 	}
 
-	// Sets up the console that displays the messages that are sent between the
-	// Client and the server
+	/**
+	 * Sets up the console that displays the messages that are sent between the
+	 * client and the server.
+	 */
 	public void setConsole() {
 		consolePane = new JPanel();
 		consolePane.setSize(new Dimension(705, 218));
@@ -281,17 +327,27 @@ public class GameBoard extends JPanel implements GUIPanel {
 		consolePane.add(scrollPane);
 		add(consolePane);
 	}
-	
-	// Updates the number of players, so that the info pane
-	// displays the correct number of panes
+
+	/**
+	 * Updates the number of players, so that the info pane
+	 * displays the correct number of panes
+	 * 
+	 * @param n The updated number of players.
+	 */
 	public void updateNumberOfPlayers(int n){
 		numberOfPlayers = n;
 	}
 
+	/* (non-Javadoc)
+	 * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
+	 */
 	public void paintComponent(Graphics g) {
 		g.drawImage(background, 0, 0, this);
 	}
 
+	/**
+	 * Updates the player info on the info board.
+	 */
 	public void updateInfo(){
 		remove(infoBoard);
 		infoBoard = null;
@@ -301,20 +357,28 @@ public class GameBoard extends JPanel implements GUIPanel {
 		repaint();
 	}
 	
+	/* (non-Javadoc)
+	 * @see quoridor.gui.interfaces.GUIPanel#update()
+	 */
 	@Override
 	public void update() {
 		updateInfo();
 		board.repaint();		
 	}
 
+	/* (non-Javadoc)
+	 * @see quoridor.gui.interfaces.GUIPanel#writeToConsole(java.lang.String)
+	 */
 	@Override
 	public void writeToConsole(String text) {
 		console.append(' ' + text + '\n');
 		console.setCaretPosition(console.getDocument().getLength());
 	}
 
+	/* (non-Javadoc)
+	 * @see quoridor.gui.interfaces.GUIPanel#kill()
+	 */
 	@Override
-	public void kill() {
-	}
+	public void kill() {}
 	
 }

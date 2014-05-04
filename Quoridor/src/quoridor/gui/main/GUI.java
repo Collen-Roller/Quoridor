@@ -10,11 +10,19 @@ import quoridor.gui.interfaces.GUIPanel;
 import quoridor.gui.menu.StartupGUI;
 import quoridor.main.Quoridor;
 
+/**
+ * @author Team 4 Men And A Cripple
+ *
+ * This method represents the frame the game of Quoridor runs in.
+ */
 @SuppressWarnings("serial")
 public class GUI extends JFrame {
 
     private GUIPanel panel;
 
+    /**
+     * Constructs a new GUI.
+     */
     public GUI() {
         setTitle(Quoridor.TITLE);
         Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
@@ -29,10 +37,16 @@ public class GUI extends JFrame {
         setVisible(true);
     }
 
+    /**
+     * @return The panel currently displayed in the GUI.
+     */
     public GUIPanel getPanel() {
         return panel;
     }
 
+    /**
+     * @param p The panel to replace the current panel with.
+     */
     public void setPanel(GUIPanel p) {
         // TODO: Fix memory leak in this method, memory leak has to do with
         // the garbage collecting not freeing memory from the removed panels.
@@ -44,6 +58,9 @@ public class GUI extends JFrame {
         System.gc();
     }
     
+    /**
+     * Repaints the GUI and updates the panel currently displayed.
+     */
     public void update() {
         paintComponents(getGraphics());
         panel.update();

@@ -50,7 +50,7 @@ public class Init implements State {
      * Checks how many players are playing, setting the starting positions
      */
     public void startingPositions(){
-    	if(Quoridor.getHosts().length == 4){
+    	if(Quoridor.getHosts().length == 4) {
     		startingPos = new String[4];
     		startingPos[0] = "E1";
     		startingPos[1] = "I5";
@@ -74,7 +74,7 @@ public class Init implements State {
      */
     public String checkPlayerName(String name, int playerNumber){
     	if(name.equals(""))
-    		return "Player " + playerNumber;
+    		return "Player" + playerNumber;
     	else if(name.length() > 20)
     		return name.substring(0,15);
     	else
@@ -89,12 +89,17 @@ public class Init implements State {
         Quoridor.newGameState();
         Queue<String> rejected = new LinkedList<String>();
         for(int i = 0; i < Quoridor.getHosts().length; i++) {
+            // This line generates an index out of bounds exception if only 3
+            // hosts are specified in a 4 player game.
             Pawn p = new Pawn(startingPos[i],pawns[i]);
             if(p.startNetwork(Quoridor.getHosts()[i])){
                 Quoridor.getGameState().addPawn(p);
-                p.getClient().sendString("Enter Player Name");
+                p.getClient().sendString("Enter your name: ");
                 String name = p.getClient().getString();
+                if(name.split(" ").length > 1)
+                    name = name.split(" ")[1];
                 name = checkPlayerName(name,i+1);
+                Quoridor.getGameState().getNames().put(name, p);
                 Player player = new Player(name,p.getPosition().toString(),
                         Quoridor.getHosts().length);
                 Quoridor.getGameState().addPlayer(player);

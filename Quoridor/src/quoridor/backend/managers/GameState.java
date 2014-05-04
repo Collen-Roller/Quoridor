@@ -1,6 +1,8 @@
 package quoridor.backend.managers;
 
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.TreeMap;
 
 import quoridor.backend.containers.Player;
 import quoridor.backend.containers.Position;
@@ -30,6 +32,8 @@ public class GameState {
     private Walls walls;
     
     private Player winner;
+    
+    private Map<String, Pawn> names;
 
     /**
      * Constructs a new, clean game state.
@@ -39,6 +43,7 @@ public class GameState {
     	players = new ArrayList<Player>();
         pawns = new ArrayList<Pawn>();
         walls = new Walls();
+        names = new TreeMap<String, Pawn>();
     }
 
     /**
@@ -46,6 +51,13 @@ public class GameState {
      */
     public ArrayList<Player> getPlayer() {
     	return players;
+    }
+    
+    /**
+     * @return Return the mapping of display names to pawns.
+     */
+    public Map<String, Pawn> getNames() {
+        return names;
     }
 
     /**
@@ -71,8 +83,8 @@ public class GameState {
      *          vertical.
      * @return Whether the wall was able to be successfully placed.
      */
-    public boolean addWall(Position a, Position b) {
-        if (walls.canAdd(a, b)) {
+    public boolean addWall(Position a, Position b, GameState gs) {
+        if (walls.canAdd(a, b, gs)) {
             walls.add(a, b);
             return true;
         }
@@ -95,7 +107,7 @@ public class GameState {
             b = new Position(a.x, a.y + 1);
         else
             b = new Position(a.x + 1, a.y);
-        return addWall(a, b);
+        return addWall(a, b, this);
     }
 
     /**
@@ -149,10 +161,18 @@ public class GameState {
         return false;
     }
 
+    /**
+     * Name a player winner of the game.
+     * 
+     * @param p The player that has won the game.
+     */
     public void setWinner(Player p) {
         winner = p;
     }
     
+    /**
+     * @return Return the player representing the winner of the game.
+     */
     public Player getWinner() {
         return winner;
     }

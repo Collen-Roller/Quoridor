@@ -36,6 +36,7 @@ public class NetworkClient {
 	public void sendString(String s) {
 		try {
 			Quoridor.getGUI().getPanel().writeToConsole("Client: " + s);
+			outToServer.flush();
 			outToServer.writeBytes(s + '\n');
 		} catch (IOException e) {
 			System.err.println("Error sending message");

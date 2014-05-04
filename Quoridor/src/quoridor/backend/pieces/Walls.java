@@ -1,11 +1,13 @@
 package quoridor.backend.pieces;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
 import quoridor.backend.containers.Position;
+import quoridor.backend.managers.GameState;
 
 /**
  * @author Team 4 Men And A Cripple
@@ -37,6 +39,18 @@ public class Walls {
         wallsh = new TreeMap<Position, Position>();
         used = new TreeSet<Position>();
     }
+    
+    /**
+     * Effectively clones a Walls object.
+     */
+    public Walls(Walls w) {
+        wallsv = new TreeMap<Position, Position>();
+        wallsv.putAll(w.wallsv);
+        wallsh = new TreeMap<Position, Position>();
+        wallsh.putAll(w.wallsh);
+        used = new TreeSet<Position>();
+        used.addAll(w.used);
+    }
 
     /**
      * Determines if a wall can be placed given the current configuration.
@@ -45,21 +59,39 @@ public class Walls {
      * @param b The position to determine the wall's orientation.
      * @return Whether the wall can be placed.
      */
-    public boolean canAdd(Position a, Position b) {
+    public boolean canAdd(Position a, Position b, GameState gs) {
         if (a.x > b.x || a.y > b.y) {
             Position temp = a;
             a = b;
             b = temp;
         }
-        if (used.contains(a) || a.x < 0 || a.y < 0 || a.x > 7 || a.y > 7)
+        // What do I have to do to make contains work?! It's probably like "Oh
+        // I see you implemented equals(Object o), I wanted equals(Position p),
+        // sorry, try again next time. And if I do equals(Position p) it'll be
+        // like oh I ACTUALLY wanted equals(Object o). Anyway, for the rest of
+        // this project there is no winning, I'll just iterated and check by
+        // hand so the great java gods don't smite my program.
+        for(Position po : used)
+            if(a.x == po.x && a.y == po.y)
+                return false;
+        if (a.x < 0 || a.y < 0 || a.x > 7 || a.y > 7)
             return false;
         if (isVertical(a, b)) {
             Position c = new Position(a.x, a.y + 1);
-            if (wallsv.containsKey(a) || wallsv.containsKey(c))
-                return false;
+            for(Position po : wallsv.keySet())
+                if((po.x == a.x && po.y == a.y) || (po.x == c.x && po.y == c.y))
+                    return false;
         } else {
             Position c = new Position(a.x + 1, a.y);
-            if (wallsh.containsKey(a) || wallsh.containsKey(c))
+            for(Position po : wallsh.keySet())
+                if((po.x == a.x && po.y == a.y) || (po.x == c.x && po.y == c.y))
+                    return false;
+        }
+        Walls tempWalls = new Walls(this);
+        tempWalls.add(a, b);
+        for(Pawn p : gs.getPawns()) {
+            ArrayList<Position> path = p.genPath(tempWalls, gs.getPawns());
+            if(path == null)
                 return false;
         }
         return true;
@@ -119,11 +151,21 @@ public class Walls {
             a = b;
             b = temp;
         }
-        if(isVertical(a, b))
-            if(wallsv.containsKey(a))
-                return wallsv.get(a).equals(b);
-        if(wallsh.containsKey(a))
-            return wallsh.get(a).equals(b);
+        if(isVertical(a, b)) {
+            for(Position p : wallsv.keySet())
+                if(p.x == a.x && p.y == a.y) {
+                    if(wallsv.get(a) == null)
+                        return true;
+                    return wallsv.get(a).equals(b);
+                }
+        } else {
+            for(Position p : wallsh.keySet())
+                if(p.x == a.x && p.y == a.y) {
+                    if(wallsh.get(a) == null)
+                        return true;
+                    return wallsh.get(a).equals(b);
+                }
+        }
         return false;
     }
 
@@ -152,6 +194,10 @@ public class Walls {
      */
     public boolean isVertical(Position a, Position b) {
         return a.y == b.y;
+    }
+    
+    public String toString() {
+        return "Horzontal: " + wallsh + "\nVertical: " + wallsv;
     }
     
     // TODO: Test by filling an imaginary game board with valid walls then try
