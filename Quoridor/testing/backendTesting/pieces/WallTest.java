@@ -28,7 +28,8 @@ public class WallTest extends TestCase{
 	    posA = new Position("e5");
 	    posB = new Position("f5");
 	    posC = new Position("e6");
-	    
+	    walls.add(posA, posB);
+	    walls.add(posA, posC);
 	}
 	
 	
@@ -45,15 +46,45 @@ public class WallTest extends TestCase{
 		assertEquals(expectedResultOfIsVertical, result);
 	}
 	
-	/*
-	@Test
-	public void testAddingAWall(){
-		
-		
+	
+	
+	public void testCanAddAWallTrue(){
+		boolean expectedResultOfCanAdd = true;
+		boolean result = walls.canAdd(new Position("a6"), new Position("b6"));
+		assertEquals(expectedResultOfCanAdd, result);
 	}
-	*/
 	
+	public void testCanAddAWallFalse(){
+		boolean expectedResultOfCanAdd = false;
+		boolean result = walls.canAdd(new Position("e5"), new Position("e6"));
+		assertEquals(expectedResultOfCanAdd, result);
+	}
+	
+	public void testAddingAWallVertical(){
 		
+		Walls testWall = new Walls();
+		testWall.add(posA, posB);
+		assertEquals(walls.getWallsVertical(), testWall.getWallsVertical());
+				
+	}
 	
+	public void testAddingAWallHorizontal(){
+		Walls testWall = new Walls();
+		testWall.add(posA, posC);
+		assertEquals(walls.getWallsHorizontal(), testWall.getWallsHorizontal());
+	}
+	
+	public void testIsBlockedTrue(){
+		boolean expectedResultOfIsBlocked = true;
+		boolean result = walls.isBlocked(posA, posB);
+		assertEquals(expectedResultOfIsBlocked, result);
+	}
+	
+	public void testIsBlockedFalse(){
+		boolean expectedResultOfIsBlocked = false;
+		boolean result = walls.isBlocked(new Position("a1"), new Position("b1") );
+		assertEquals(expectedResultOfIsBlocked, result);
+	}
+		
 }
 

@@ -351,6 +351,7 @@ public class Pawn {
     public void setPosition(Position pos) {
         this.pos = pos;
     }
+    
 
     /**
      * Gets the current generated possible moves for this pawn.
