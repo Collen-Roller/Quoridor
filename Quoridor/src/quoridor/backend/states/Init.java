@@ -94,7 +94,7 @@ public class Init implements State {
             Pawn p = new Pawn(startingPos[i],pawns[i]);
             if(p.startNetwork(Quoridor.getHosts()[i])){
                 Quoridor.getGameState().addPawn(p);
-                p.getClient().sendString("Enter your name: ");
+                //p.getClient().sendString("Enter your name: ");
                 String name = p.getClient().getString();
                 if(name.split(" ").length > 1)
                     name = name.split(" ")[1];

@@ -44,6 +44,9 @@ public class AIServer extends Thread {
     
     // The initial positions for a 2 player game.
     String[] positions2p = {"E1", "E9"};
+    
+    // Name of the AI
+    String name;
 
     // server thread:
     // create a server instance that uses this socket endpoint
@@ -71,13 +74,13 @@ public class AIServer extends Thread {
     	try {
     	    in = new Scanner(s.getInputStream());
     	    out = new PrintStream(s.getOutputStream());
-    	    String st = "BotInTesting" + nclient;
-    	    out.println("HELLO " + st);
+    	    name = "Cripple" + nclient;
+    	    out.println("HELLO " + name);
     	    while (in.hasNextLine()) {
     	        String line = in.nextLine();
-    	        System.out.println("CLIENT TO " + st + ": " + line);
+    	        System.out.println("CLIENT TO " + name + ": " + line);
     	        String s = parse(line);
-    	        System.out.println(st +  ": " + s);
+    	        System.out.println(name +  ": " + s);
     	        if(s.equals("DONE"))
 	                break;
     	        if(!s.equals("ACK") && !s.equals("Unknown Command"))
@@ -103,24 +106,43 @@ public class AIServer extends Thread {
         if(command[0].equals("MOVE?")) {
             return "MOVE " + ai.genMove();
         } else if(command[0].equals("QUORIDOR")) {
-            for(int i = 2; i < command.length; i++) {
-                if(command.length == 4)
-                    gameState.getNames().put(command[i],
-                            new Pawn(positions2p[i - 2],
-                        (Image) null));
-                else
-                    gameState.getNames().put(command[i],
-                            new Pawn(positions4p[i - 2],
-                            (Image) null));
-                gameState.addPawn(gameState.getNames().get(command[i]));
+        	// TODO : FIX ALL OF THIS BLOCK.
+            boolean flag = false;
+        	for(int i = 2; i < command.length; i++) {
+                if(command.length == 3) {
+                	if(i == Integer.parseInt(command[1]) - 1 && !flag) {
+                		gameState.getNames().put(name, new Pawn(positions2p[i - 2], (Image) null));
+                		flag = true;
+                		gameState.addPawn(gameState.getNames().get(name));
+                	} else {
+                		gameState.getNames().put(command[i - (flag ? 1 : 0)],
+                				new Pawn(positions2p[i - (flag ? 1 : 0) - 2],
+                						(Image) null));
+                		gameState.addPawn(gameState.getNames().get(command[i - (flag ? 1 : 0)]));
+                	}
+                } else {
+                	if(i == Integer.parseInt(command[1]) - 1 && !flag) {
+                		gameState.getNames().put(name, new Pawn(positions4p[i - 2], (Image) null));
+                		flag = true;
+                		gameState.addPawn(gameState.getNames().get(name));
+                	} else {
+                		gameState.getNames().put(command[i - (flag ? 1 : 0)],
+                				new Pawn(positions4p[i - (flag ? 1 : 0) - 2],
+                						(Image) null));
+                		gameState.addPawn(gameState.getNames().get(command[i - (flag ? 1 : 0)]));
+                	}
+                }
             }
+        	if(!flag && command.length == 3) {
+        		gameState.getNames().put(name, new Pawn(positions2p[1], (Image) null));
+        		gameState.addPawn(gameState.getNames().get(name));
+        	} else if(!flag) {
+        		gameState.getNames().put(name, new Pawn(positions4p[3], (Image) null));
+        		gameState.addPawn(gameState.getNames().get(name));
+        	}
             nWalls = 20 / command.length == 4 ? 2 : 4;
-            ai = new AI(this,
-                    gameState.getPawns().get(Integer.parseInt(command[1])),
-                    "");
-            return "ACK";
-        } else if(command[0].equals("READY")) {
-            return "ACK";
+            ai = new AI(this, gameState.getPawns().get(Integer.parseInt(command[1])), "");
+            return "READY " + name;
         } else if(command[0].equals("MOVED")) {
             if(command[2].length() == 3) {
                 String s1 = command[2].toUpperCase().trim();

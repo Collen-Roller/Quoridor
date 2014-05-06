@@ -38,12 +38,17 @@ public class Turn implements State {
         if(Quoridor.getGameState().getPawns().size() == 0)
             return true;
         if(firstRun) {
-            for(int i = 0; i < Quoridor.getGameState().getPawns().size(); i++) {
-                String s = "QUORIDOR " + i;
-                for(Player p : Quoridor.getGameState().getPlayer())
-                    s += " " + p.getName();
+            for(int i = 0; i < Quoridor.getGameState().getPawns().size(); i++){
+                String s = "QUORIDOR " + (i+1);
+                for(Player p : Quoridor.getGameState().getPlayer()) {
+                	if(!Quoridor.getGameState().getPawns().get(i).equals(
+                    	Quoridor.getGameState().getNames().get(p.getName())))
+                    	s += " " + p.getName();
+                }    
                 Quoridor.getGameState().getPawns().get(i)
                     .sendMessageToPlayer(s);
+                // TODO needs timeout potentially
+                Quoridor.getGameState().getPawns().get(i).getClient().getString();
             }
             firstRun = false;
         }
@@ -104,7 +109,8 @@ public class Turn implements State {
             // the booted player as the winner, basically just a fenceposting
             // problem.
             if(Quoridor.getGameState().hasWon(p)) {
-                p.sendMessageToPlayer("You have won!!!!!!");
+            	for(Pawn pawn: Quoridor.getGameState().getPawns())
+            		pawn.sendMessageToPlayer("WINNER " + p2.getName() );
                 Quoridor.getGUI().getPanel().writeToConsole(p2.getName()
                         + " has won the game!");
                 Quoridor.getGUI().getPanel().update();

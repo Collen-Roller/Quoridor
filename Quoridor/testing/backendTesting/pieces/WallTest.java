@@ -14,6 +14,7 @@ import junit.framework.*;
 
 import quoridor.backend.containers.Position;
 import quoridor.backend.pieces.Walls;
+import quoridor.main.Quoridor;
 
 public class WallTest extends TestCase{
 	
@@ -24,7 +25,8 @@ public class WallTest extends TestCase{
 	
 	
 	public void setUp() {
-	    walls = new Walls();
+	    Quoridor.newGameState();
+		walls = new Walls();
 	    posA = new Position("e5");
 	    posB = new Position("f5");
 	    posC = new Position("e6");
@@ -50,13 +52,13 @@ public class WallTest extends TestCase{
 	
 	public void testCanAddAWallTrue(){
 		boolean expectedResultOfCanAdd = true;
-		boolean result = walls.canAdd(new Position("a6"), new Position("b6"));
+		boolean result = walls.canAdd(new Position("a6"), new Position("b6"), Quoridor.getGameState());
 		assertEquals(expectedResultOfCanAdd, result);
 	}
 	
 	public void testCanAddAWallFalse(){
 		boolean expectedResultOfCanAdd = false;
-		boolean result = walls.canAdd(new Position("e5"), new Position("e6"));
+		boolean result = walls.canAdd(new Position("e5"), new Position("e6"), Quoridor.getGameState());
 		assertEquals(expectedResultOfCanAdd, result);
 	}
 	
