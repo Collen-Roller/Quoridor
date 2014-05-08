@@ -120,7 +120,6 @@ public class AIServer extends Thread {
             ai = new AI(this, gameState.getPawns().get(
                     (Integer.parseInt(command[1])) - 1), "");
             nWalls = 20 / (command.length == 3 ? 2 : 4);
-            System.out.println(nWalls);
             return "READY " + name;
         } else if (command[0].equals("MOVED")) {
             if (command[2].length() == 3) {
@@ -139,8 +138,8 @@ public class AIServer extends Thread {
             turn++;
             return "ACK";
         } else if (command[0].equals("REMOVED")) {
-            gameState.getPawns().remove(
-                    gameState.getPawns()
+            turn = turn % gameState.getPawns().size();
+            gameState.getPawns().remove(gameState.getPawns()
                             .get(turn % gameState.getPawns().size()));
             return "ACK";
         } else if (command[0].equals("WINNER")) {
