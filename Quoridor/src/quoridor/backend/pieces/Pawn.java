@@ -24,7 +24,7 @@ import quoridor.network.client.NetworkClient;
  * 
  * Represents a pawn in a game of Quoridor.
  */
-public class Pawn {
+public class Pawn implements Comparable {
 	
 	/**
 	 * Boolean telling if players turn or not
@@ -51,6 +51,13 @@ public class Pawn {
      */
     private Image pawn;
     
+    // The number associated with this pawns instantiation.
+    private int nPawn;
+    
+    // How many pawns have been instantiated this runtime.
+    // Used for the implementation of comparable.
+    private static int nPawns = 0;
+    
     private Position[] currentMoves;
     
     private String winRegex;
@@ -68,6 +75,7 @@ public class Pawn {
     	this.currentTurn = false;
         this.pos = new Position(pos);
         this.pawn = p;
+        nPawn = nPawns++;
     }
     
     /**
@@ -360,6 +368,15 @@ public class Pawn {
      */
     public Position[] getCurrentMoves() {
         return currentMoves;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        if(!o.getClass().equals(this.getClass()))
+            return -1;
+        if(((Pawn) o).nPawn == this.nPawn)
+            return 0;
+        return ((Pawn) o).nPawn >  this.nPawn ? 1 : -1;
     }
 
 }

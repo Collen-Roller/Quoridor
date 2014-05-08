@@ -99,7 +99,7 @@ public class Init implements State {
                 if(name.split(" ").length > 1)
                     name = name.split(" ")[1];
                 name = checkPlayerName(name,i+1);
-                Quoridor.getGameState().getNames().put(name, p);
+                Quoridor.getGameState().getNames().put(p, name);
                 Player player = new Player(name,p.getPosition().toString(),
                         Quoridor.getHosts().length);
                 Quoridor.getGameState().addPlayer(player);

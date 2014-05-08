@@ -33,7 +33,7 @@ public class GameState {
     
     private Player winner;
     
-    private Map<String, Pawn> names;
+    private Map<Pawn, String> names;
 
     /**
      * Constructs a new, clean game state.
@@ -43,7 +43,7 @@ public class GameState {
     	players = new ArrayList<Player>();
         pawns = new ArrayList<Pawn>();
         walls = new Walls();
-        names = new TreeMap<String, Pawn>();
+        names = new TreeMap<Pawn, String>();
     }
 
     /**
@@ -56,7 +56,7 @@ public class GameState {
     /**
      * @return Return the mapping of display names to pawns.
      */
-    public Map<String, Pawn> getNames() {
+    public Map<Pawn, String> getNames() {
         return names;
     }
 

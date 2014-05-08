@@ -45,7 +45,7 @@ public class AI {
             = closest.genPath(parent.getGameState().getWalls(),
                     parent.getGameState().getPawns());
         if(myPath.size() > theirPath.size()) {
-            if(parent.getNWalls() >= 0) {
+            if(parent.getNWalls() > 0) {
                 String s = block();
                 if(!s.equals("ERROR")) {
                     parent.deductWall();

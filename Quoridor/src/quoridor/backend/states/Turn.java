@@ -40,10 +40,9 @@ public class Turn implements State {
         if(firstRun) {
             for(int i = 0; i < Quoridor.getGameState().getPawns().size(); i++){
                 String s = "QUORIDOR " + (i+1);
-                for(Player p : Quoridor.getGameState().getPlayer()) {
-                	if(!Quoridor.getGameState().getPawns().get(i).equals(
-                    	Quoridor.getGameState().getNames().get(p.getName())))
-                    	s += " " + p.getName();
+                for(Pawn p : Quoridor.getGameState().getNames().keySet()) {
+                	if(!p.equals(Quoridor.getGameState().getPawns().get(i)))
+                	     s += " " + Quoridor.getGameState().getNames().get(p);   
                 }    
                 Quoridor.getGameState().getPawns().get(i)
                     .sendMessageToPlayer(s);
