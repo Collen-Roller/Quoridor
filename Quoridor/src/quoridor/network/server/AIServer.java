@@ -10,7 +10,6 @@ import quoridor.backend.ai.AI;
 import quoridor.backend.containers.Position;
 import quoridor.backend.managers.GameState;
 import quoridor.backend.pieces.Pawn;
-import quoridor.main.Quoridor;
 
 /* multi-threaded server */
 
@@ -85,6 +84,7 @@ public class AIServer extends Thread {
                 String line = in.nextLine();
                 System.out.println("CLIENT TO " + name + ": " + line);
                 String s = parse(line);
+                Thread.sleep(1000);
                 System.out.println(name + ": " + s);
                 if (s.equals("DONE"))
                     break;

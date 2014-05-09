@@ -189,12 +189,17 @@ public class GameBoard extends JPanel implements GUIPanel {
 							p.getPosition().x * 44 + 6 * p.getPosition().x + 1,
 							p.getPosition().y * 44 + 6 * p.getPosition().y + 1,
 							44, 44, this);
-						if(p.currentTurn())
-							for(Position pos : p.getCurrentMoves())
+						if(p.currentTurn()){
+							for(Position pos : p.getCurrentMoves()){
 								offscreen.drawImage(moveTo,
 										pos.x * 44 + 6 * pos.x + 1,
 										pos.y * 44 + 6 * pos.y + 1,
 										44, 44, this);
+								offscreen.drawString(pos.toString(),
+											15+pos.x * 44 + 6 * pos.x + 1,
+											25+pos.y * 44 + 6 * pos.y + 1);
+							}
+						}
 						
 				}
 				//Place horizontal walls on board
