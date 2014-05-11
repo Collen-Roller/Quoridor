@@ -24,7 +24,7 @@ import quoridor.network.client.NetworkClient;
  * 
  * Represents a pawn in a game of Quoridor.
  */
-public class Pawn implements Comparable {
+public class Pawn  {
 	
 	/**
 	 * Boolean telling if players turn or not
@@ -39,7 +39,7 @@ public class Pawn implements Comparable {
     /**
      * The object handing the network connection relevant to this pawn.
      */
-    private NetworkClient networkClient;
+    public NetworkClient networkClient;
 
     /**
      * The regex to determine if a move is of the correct format.
@@ -50,13 +50,6 @@ public class Pawn implements Comparable {
      * The graphic to be drawn on screen when this pawn is painted.
      */
     private Image pawn;
-    
-    // The number associated with this pawns instantiation.
-    private int nPawn;
-    
-    // How many pawns have been instantiated this runtime.
-    // Used for the implementation of comparable.
-    private static int nPawns = 0;
     
     private Position[] currentMoves;
     
@@ -75,7 +68,6 @@ public class Pawn implements Comparable {
     	this.currentTurn = false;
         this.pos = new Position(pos);
         this.pawn = p;
-        nPawn = nPawns++;
     }
     
     /**
@@ -323,7 +315,7 @@ public class Pawn implements Comparable {
      */
     public void boot(Player pl) {
         for(Pawn p : Quoridor.getGameState().getPawns())
-            p.networkClient.sendString("REMOVED " + pl.getName());
+            p.networkClient.sendString("REMOVED " + pl.getPlayerNumber());
         networkClient.close();
     }
 
@@ -354,7 +346,6 @@ public class Pawn implements Comparable {
     /**
      * @param pos The new position for this pawn
      * 
-     * TODO: This method and the move method are identical.
      */
     public void setPosition(Position pos) {
         this.pos = pos;
@@ -368,15 +359,6 @@ public class Pawn implements Comparable {
      */
     public Position[] getCurrentMoves() {
         return currentMoves;
-    }
-
-    @Override
-    public int compareTo(Object o) {
-        if(!o.getClass().equals(this.getClass()))
-            return -1;
-        if(((Pawn) o).nPawn == this.nPawn)
-            return 0;
-        return ((Pawn) o).nPawn >  this.nPawn ? 1 : -1;
     }
 
 }

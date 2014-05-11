@@ -26,6 +26,7 @@ public class NetworkClient {
 			outToServer = new DataOutputStream(clientSocket.getOutputStream());
 			inFromServer = new BufferedReader(new InputStreamReader(
 					clientSocket.getInputStream()));
+			
 			// TODO: add a greeting
 		} else
 			throw new UnknownHostException();
@@ -56,6 +57,17 @@ public class NetworkClient {
 		}
 		return "ERROR";
 	}
+	
+		// Gets input from the server, then returns it
+		public String getStringNoTerminal() {
+			try {
+				String s = inFromServer.readLine();
+				return s;
+			} catch (IOException e) {
+				return "ERROR";
+			}
+			
+		}
 
 	// Closes the input and output to a server
 	public void close() {

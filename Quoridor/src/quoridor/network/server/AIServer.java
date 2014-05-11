@@ -4,6 +4,7 @@ import java.awt.Image;
 import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
 import java.util.Scanner;
 
 import quoridor.backend.ai.AI;
@@ -40,23 +41,22 @@ public class AIServer extends Thread {
     private GameState gameState;
 
     // The initial positions for a 4 player game.
-    private String[] positions4p = { "E1", "I5", "E9", "A5" };
+    //private String[] positions4p = { "E1", "I5", "E9", "A5" };
+    private String[] positions4p = { "E1", "E9", "A5", "I5" };
 
     // The initial positions for a 2 player game.
     private String[] positions2p = { "E1", "E9" };
 
     // Name of the AI
     private String name;
-
-    // The current turn
-    private int turn;
+    
+    private HashMap<Integer, Pawn> map = new HashMap<Integer, Pawn>();
 
     // server thread:
     // create a server instance that uses this socket endpoint
     public AIServer(Socket s) {
         this.s = s;
         gameState = new GameState();
-        turn = 0;
     }
 
     // start a service dispatcher on the server port
@@ -84,7 +84,7 @@ public class AIServer extends Thread {
                 String line = in.nextLine();
                 System.out.println("CLIENT TO " + name + ": " + line);
                 String s = parse(line);
-                Thread.sleep(1000);
+                Thread.sleep(250);
                 System.out.println(name + ": " + s);
                 if (s.equals("DONE"))
                     break;
@@ -111,12 +111,18 @@ public class AIServer extends Thread {
         if (command[0].equals("MOVE?")) {
             return "MOVE " + ai.genMove();
         } else if (command[0].equals("QUORIDOR")) {
-            if (command.length == 3)
-                for (String pos : positions2p)
+        	int count = 1;
+            if (command.length == 3){
+                for (String pos : positions2p){
                     gameState.addPawn(new Pawn(pos, (Image) null));
-            else
-                for (String pos : positions4p)
+            		map.put(count++, gameState.getPawns().get(gameState.getPawns().size()-1));
+                }
+            }else{
+                for (String pos : positions4p){
                     gameState.addPawn(new Pawn(pos, (Image) null));
+                    map.put(count++, gameState.getPawns().get(gameState.getPawns().size()-1));
+                }
+            }
             ai = new AI(this, gameState.getPawns().get(
                     (Integer.parseInt(command[1])) - 1), "");
             nWalls = 20 / (command.length == 3 ? 2 : 4);
@@ -132,15 +138,11 @@ public class AIServer extends Thread {
                     b = new Position(a.x + 1, a.y);
                 gameState.getWalls().add(a, b);
             } else {
-                gameState.getPawns().get(turn % gameState.getPawns().size())
-                        .setPosition(new Position(command[2]));
+            	map.get(Integer.parseInt(command[1])).setPosition(new Position(command[2]));
             }
-            turn++;
             return "ACK";
         } else if (command[0].equals("REMOVED")) {
-            turn = turn % gameState.getPawns().size();
-            gameState.getPawns().remove(gameState.getPawns()
-                            .get(turn % gameState.getPawns().size()));
+        	gameState.getPawns().remove(Integer.parseInt(command[1])-1);
             return "ACK";
         } else if (command[0].equals("WINNER")) {
             return "DONE";

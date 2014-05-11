@@ -38,6 +38,25 @@ public class Turn implements State {
         if(Quoridor.getGameState().getPawns().size() == 0)
             return true;
         if(firstRun) {
+        	for(int k = 0; k< Quoridor.getGameState().getPlayer().size(); k++){
+        		Player p1 = Quoridor.getGameState().getPlayer().get(k);
+        		String s = "QUORIDOR " + p1.getPlayerNumber();
+        		for(int i = 0; i < Quoridor.getGameState().getPlayer().size(); i++){
+        			Player p2 = Quoridor.getGameState().getPlayer().get(i);
+        			if(p1.getPlayerNumber() != p2.getPlayerNumber()){
+        				s += " " + p2.getName();
+        			}
+        		}
+        		Quoridor.getGameState().getPawns().get(k)
+                .sendMessageToPlayer(s);
+        		Quoridor.getGameState().getPawns().get(k).getClient().getString();
+        	}
+        	firstRun = false;
+        	
+        }
+        	
+        	
+        	/*
             for(int i = 0; i < Quoridor.getGameState().getPawns().size(); i++){
                 String s = "QUORIDOR " + (i+1);
                 for(Pawn p : Quoridor.getGameState().getNames().keySet()) {
@@ -51,6 +70,7 @@ public class Turn implements State {
             }
             firstRun = false;
         }
+        */
         Iterator<Pawn> itr = Quoridor.getGameState().getPawns().iterator();
         Iterator<Player> itr2 = Quoridor.getGameState().getPlayer().iterator();
         while(itr.hasNext()) {
@@ -84,7 +104,7 @@ public class Turn implements State {
                 	p2.updateMove();
                 	for(Pawn pawn : Quoridor.getGameState().getPawns())
                 	    pawn.sendMessageToPlayer("MOVED "
-                	            + p2.getName() + " " + move);
+                	            + p2.getPlayerNumber() + " " + move);
                 }
             } else if(move.length() == 3){
                 if(!Quoridor.getGameState().addWall(move)) {
@@ -99,25 +119,25 @@ public class Turn implements State {
                 	p2.updateWalls();
                     for(Pawn pawn : Quoridor.getGameState().getPawns())
                         pawn.sendMessageToPlayer("MOVED "
-                                + p2.getName() + " " + move);
+                                + p2.getPlayerNumber() + " " + move);
                 }
             }
             p.isTurn(false);
-            // TODO:
-            // If a player wins because another player is booted it recognizes
-            // the booted player as the winner, basically just a fenceposting
-            // problem.
             if(Quoridor.getGameState().hasWon(p)) {
             	for(Pawn pawn: Quoridor.getGameState().getPawns())
-            		pawn.sendMessageToPlayer("WINNER " + p2.getName() );
-                Quoridor.getGUI().getPanel().writeToConsole(p2.getName()
+            		pawn.sendMessageToPlayer("WINNER " + (Quoridor.getGameState().getPawns().size() == 1 
+            									? Quoridor.getGameState().getPlayer().get(0).getPlayerNumber() : p2.getPlayerNumber()));
+                Quoridor.getGUI().getPanel().writeToConsole((Quoridor.getGameState().getPawns().size() == 1 
+						? Quoridor.getGameState().getPlayer().get(0).getPlayerNumber() : p2.getPlayerNumber())
                         + " has won the game!");
                 Quoridor.getGUI().getPanel().update();
-                Quoridor.getGameState().setWinner(p2);
+                Quoridor.getGameState().setWinner((Quoridor.getGameState().getPawns().size() == 1 
+						? Quoridor.getGameState().getPlayer().get(0) : p2));
                 return true;
             }
         }
         return false;
+        
     }
     
     /**
@@ -128,7 +148,7 @@ public class Turn implements State {
      * @param message The description of why the player is being kicked.
      */
     private void kick(Pawn p, Player p2, String message) {
-        Quoridor.getGUI().getPanel().writeToConsole(p2.getName()
+        Quoridor.getGUI().getPanel().writeToConsole(p2.getPlayerNumber()
                                                     + " is being removed");
         Quoridor.getGUI().getPanel().writeToConsole(message);
         p.boot(p2);

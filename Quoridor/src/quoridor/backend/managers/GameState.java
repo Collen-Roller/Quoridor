@@ -1,8 +1,6 @@
 package quoridor.backend.managers;
 
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.TreeMap;
 
 import quoridor.backend.containers.Player;
 import quoridor.backend.containers.Position;
@@ -33,7 +31,7 @@ public class GameState {
     
     private Player winner;
     
-    private Map<Pawn, String> names;
+   // private Map<Pawn, String> names;
 
     /**
      * Constructs a new, clean game state.
@@ -43,7 +41,7 @@ public class GameState {
     	players = new ArrayList<Player>();
         pawns = new ArrayList<Pawn>();
         walls = new Walls();
-        names = new TreeMap<Pawn, String>();
+        //names = new TreeMap<Pawn, String>();
     }
 
     /**
@@ -51,13 +49,6 @@ public class GameState {
      */
     public ArrayList<Player> getPlayer() {
     	return players;
-    }
-    
-    /**
-     * @return Return the mapping of display names to pawns.
-     */
-    public Map<Pawn, String> getNames() {
-        return names;
     }
 
     /**
@@ -113,7 +104,6 @@ public class GameState {
     /**
      * @return Whether a player has won the game.
      * 
-     * TODO: Add the full win condition to the game.
      */
     public boolean hasWon(Pawn p) {
     	if(p.didPawnWin()){

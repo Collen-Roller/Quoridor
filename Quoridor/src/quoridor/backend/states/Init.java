@@ -32,6 +32,8 @@ public class Init implements State {
      * The images to assign to each pawn.
      */
     private final Image [] pawns = new Image[4];
+    
+    private Queue<String> rejected = new LinkedList<String>();
 
     /**
      * Constructs a new init state and loads resources.
@@ -39,11 +41,11 @@ public class Init implements State {
     public Init() {
         transitions = new HashMap<Boolean, State>();
         transitions.put(true, new Turn());
-        startingPositions();
         pawns[0] = Toolkit.getDefaultToolkit().createImage("res/pawn_dark.png");
-		pawns[1] = Toolkit.getDefaultToolkit().createImage("res/pawn_light.png");
-		pawns[2] = Toolkit.getDefaultToolkit().createImage("res/pawn_blue.png");
-		pawns[3] = Toolkit.getDefaultToolkit().createImage("res/pawn_red.png");
+		pawns[1] = Toolkit.getDefaultToolkit().createImage("res/pawn_blue.png");
+		pawns[2] = Toolkit.getDefaultToolkit().createImage("res/pawn_red.png");
+		pawns[3] = Toolkit.getDefaultToolkit().createImage("res/pawn_light.png");
+		startingPositions();
     }
 
     /**
@@ -53,16 +55,19 @@ public class Init implements State {
     	if(Quoridor.getHosts().length == 4) {
     		startingPos = new String[4];
     		startingPos[0] = "E1";
-    		startingPos[1] = "I5";
-    		startingPos[2] = "E9";
-    		startingPos[3] = "A5";
+    		startingPos[1] = "E9"; 
+    		startingPos[2] = "A5";
+    		startingPos[3] = "I5";
     	}
     	else{
     		startingPos = new String[2];
     		startingPos[0] = "E1";
     		startingPos[1] = "E9";
+    		pawns[1] = Toolkit.getDefaultToolkit().createImage("res/pawn_light.png");
     	}
     }
+    
+    
 
     /**
      * Checks if the player name was too big and only takes the substring(0,15),
@@ -72,15 +77,6 @@ public class Init implements State {
      * @param playerNumber Number to give the player name a number
      * @return name
      */
-    public String checkPlayerName(String name, int playerNumber){
-    	if(name.equals(""))
-    		return "Player" + playerNumber;
-    	else if(name.length() > 20)
-    		return name.substring(0,15);
-    	else
-    		return name;
-    }
-
     /* (non-Javadoc)
      * @see quoridor.backend.states.State#execute()
      */
@@ -88,25 +84,16 @@ public class Init implements State {
     public boolean execute() {
         Quoridor.newGameState();
         Queue<String> rejected = new LinkedList<String>();
-        for(int i = 0; i < Quoridor.getHosts().length; i++) {
-            // This line generates an index out of bounds exception if only 3
-            // hosts are specified in a 4 player game.
-            Pawn p = new Pawn(startingPos[i],pawns[i]);
-            if(p.startNetwork(Quoridor.getHosts()[i])){
-                Quoridor.getGameState().addPawn(p);
-                //p.getClient().sendString("Enter your name: ");
-                String name = p.getClient().getString();
-                if(name.split(" ").length > 1)
-                    name = name.split(" ")[1];
-                name = checkPlayerName(name,i+1);
-                Quoridor.getGameState().getNames().put(p, name);
-                Player player = new Player(name,p.getPosition().toString(),
-                        Quoridor.getHosts().length);
-                Quoridor.getGameState().addPlayer(player);
-            }
-            else
-                rejected.add(Quoridor.getHosts()[i]);
+        if(Quoridor.getHosts().length == 4){
+        	addPawnToGameState(0,0);
+        	addPawnToGameState(3,1);
+        	addPawnToGameState(1,2);
+        	addPawnToGameState(2,3);
+        }else{
+        	addPawnToGameState(0,0);
+        	addPawnToGameState(1,1);
         }
+
         Quoridor.getGUI().setPanel(new GameBoard(Quoridor.getHosts().length));
         while(!rejected.isEmpty())
             Quoridor.getGUI().getPanel().writeToConsole("Connection to " +
@@ -114,7 +101,21 @@ public class Init implements State {
                                                   " could not be established.");
         return true;
     }
+    
+	public void addPawnToGameState(int i, int j){
+			Pawn p = new Pawn(startingPos[i],pawns[i]);
 
+		    if(p.startNetwork(Quoridor.getHosts()[j])){
+		    	//gets hello
+		    	String [] ai = p.networkClient.getStringNoTerminal().split("\\s+");
+		    	Quoridor.getGameState().addPawn(p);
+		        String name = ai[1] + " " + (i+1);
+		        Player player = new Player(name,p.getPosition().toString(),
+		                   Quoridor.getHosts().length);
+		        Quoridor.getGameState().addPlayer(player);
+		    }else
+		        rejected.add(Quoridor.getHosts()[j]);
+	}
     /* (non-Javadoc)
      * @see quoridor.backend.states.State#transition(boolean)
      */

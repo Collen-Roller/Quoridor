@@ -34,6 +34,7 @@ public class Player {
 	 */
 	String name;
 
+	int playerNumber;
 	/**
 	 * Constructs a new Player object with the specified information.
 	 * 
@@ -46,7 +47,8 @@ public class Player {
 		this.remainingwalls = 20/nop;
 		this.movecount = 0;
 		this.location = loc;
-		this.name = name;
+		this.name = name.split("\\s+")[0];
+		this.playerNumber = Integer.parseInt(name.split("\\s+")[1]);
 		//TODO: how to implement possible moves! do this when AI is made
 	}
 
@@ -67,6 +69,10 @@ public class Player {
 	 */
 	public void updateMove(){
 		movecount++;
+	}
+	
+	public int getPlayerNumber(){
+		return playerNumber;
 	}
 
 	/**
