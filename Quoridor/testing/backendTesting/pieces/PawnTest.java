@@ -1,20 +1,15 @@
-/*
- *	Author: John Payton
+/**
+	Author: John Payton
  */
 
 package backendTesting.pieces;
 
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.io.IOException;
-import java.net.UnknownHostException;
-import java.util.*;
 import junit.framework.*;
 
 
 import quoridor.backend.containers.Position;
-import quoridor.main.Quoridor;
-import quoridor.network.client.NetworkClient;
 import quoridor.backend.pieces.Pawn;
 
 
@@ -46,6 +41,7 @@ public class PawnTest extends TestCase{
 	}
 	
 	public void testSetWinCondition(){
+		
 		pawn1.setWinCondition("E1");
 		String winRegex = "([a-i][9])";
 		assertEquals(winRegex, pawn1.getWinCondition());
