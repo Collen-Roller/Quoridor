@@ -142,7 +142,7 @@ public class AIServer extends Thread {
             }
             return "ACK";
         } else if (command[0].equals("REMOVED")) {
-        	gameState.getPawns().remove(Integer.parseInt(command[1])-1);
+        	gameState.getPawns().remove(map.get(Integer.parseInt(command[1])));
             return "ACK";
         } else if (command[0].equals("WINNER")) {
             return "DONE";

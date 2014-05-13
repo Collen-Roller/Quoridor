@@ -6,9 +6,8 @@ package backendTesting.pieces;
 
 import java.awt.Image;
 import java.awt.Toolkit;
-import junit.framework.*;
 
-
+import junit.framework.TestCase;
 import quoridor.backend.containers.Position;
 import quoridor.backend.pieces.Pawn;
 
