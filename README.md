@@ -1,6 +1,6 @@
 #Quoridor
 
-Undergraduate Software Enginnering Projec
+Undergraduate Software Enginnering Project
 
 ##Rules
 
